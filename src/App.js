@@ -12,6 +12,8 @@ import { useState, useEffect } from "react";
 import './App.css';
 import myContract from './contract.js';
 import State from './components/state.js'
+import Projects from "./components/projects";
+import Users from "./components/users"
 
 function App() {
 
@@ -39,6 +41,8 @@ function App() {
 
   const [value, setValue] = useState(getInitialState);
   const [value1, setValue1] = useState(getInitialState1);
+  const [state2, setstate2] = useState({data:""})
+  const [state3, setstate3] = useState({data:""})
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -47,49 +51,85 @@ function App() {
   const handleChange1 = (e) => {
     setValue1(e.target.value);
   };
-  
-  
-  // var Web3 = require('web3')
-  // const web3 = new Web3('http://localhost:8545');
 
   const enableMetaMask = async () => {
     await ethereum.request({ method: "eth_requestAccounts" });
   };
 
+  const register = async () => {
+    enableMetaMask();
+    const addUser = await myContract.methods.registerUser()
+    .send({from:ethereum.selectedAddress})
+  };
+
+  const openRegister = async () => {
+    enableMetaMask();
+    const open = await myContract.methods.openReg()
+    .send({from:ethereum.selectedAddress})
+  };
 
   const Project_Add = async () => {
     enableMetaMask();
-
-    let proposalThreshold = document.getElementById('proposalThreshold').value;
-    let votingThreshold = document.getElementById('votingThreshold').value;
-    let minStakeAmt = document.getElementById('minStakeAmt').value;
+    let projectUrl = document.getElementById('url').value;
     const addProject = await myContract.methods.Project_Add(
-      proposalThreshold,
-      votingThreshold,
-      minStakeAmt
+      projectUrl
     )
     .send({from:ethereum.selectedAddress})
   };
 
-  
+
+  const Project_view  = async () => {
+    let results = []
+    const result = await myContract.getPastEvents('AddProject',{
+      fromBlock:0,
+      toBlock: 'latest'
+    });
+    results.push(result);
+    return results;
+  };
+
+  const User_view  = async () => {
+    let results = []
+    const result = await myContract.getPastEvents('AddUser',{
+      fromBlock:0,
+      toBlock: 'latest'
+    });
+    results.push(result);
+    return results;
+  };
+
+  let data2 = [];
+  const w = Promise.resolve(Project_view());
+  w.then(value => {
+      for (let i = 0; i < value[0].length ; i++){
+          data2.push((value[0][i].returnValues))
+      }
+  })
+
+  let data3 = [];
+  const x = Promise.resolve(User_view());
+  w.then(value => {
+      for (let i = 0; i < value[0].length ; i++){
+          data3.push((value[0][i].returnValues))
+      }
+  })
+
+
+  const changeState2 = () => {  
+    setstate2({data: data2}); 
+  }; 
+
+
+  const changeState3 = () => {  
+    setstate3({data: data3}); 
+  }; 
 
   const Project_StakeMoney = async () => {
     enableMetaMask();
-    let id = document.getElementById('projectId').value;
+    let id = document.getElementById('projectid').value;
     let amt = document.getElementById('amt').value;
     const stakeProject = await myContract.methods.Project_StakeMoney(
-      id,
-      amt
-    )
-    .send({from:ethereum.selectedAddress})
-  };
-
-  const Proposal_Add = async () => {
-    enableMetaMask();
-
-    let id = document.getElementById('projectid').value;
-    const addProject = await myContract.methods.Proposal_Add(
-      id
+      amt,id
     )
     .send({from:ethereum.selectedAddress})
   };
@@ -98,9 +138,8 @@ function App() {
     enableMetaMask();
     let votetype = value1;
     let projId = document.getElementById('projId').value;
-    let propId = document.getElementById('propId').value;
-    const addProject = await myContract.methods.Proposal_CastVote(
-      votetype,projId,propId
+    const addProject = await myContract.methods.Project_CastVote(
+      votetype,projId
     )
     .send({from:ethereum.selectedAddress})
   };
@@ -109,9 +148,8 @@ function App() {
   const closeVote = async () => {
     enableMetaMask();
     let projeId = document.getElementById('projeId').value;
-    let proposId = document.getElementById('proposId').value;
-    const closevote = await myContract.methods.Proposal_SetState_CloseVoting(
-      projeId,proposId
+    const closevote = await myContract.methods.Project_SetState_CloseVoting(
+      projeId
     )
     .send({from:ethereum.selectedAddress})
   };
@@ -119,18 +157,20 @@ function App() {
 
   const setState = async () => {
     enableMetaMask();
-    let id = document.getElementById('proposId').value;
+    let id = document.getElementById('projectId').value;
+    let stake = document.getElementById('minStakeAmt').value;
+    let voteThreshold = document.getElementById('votingThreshold').value;
     const state = value;
-    const addProject = await myContract.methods.Proposal_SetState(
-      id, state
+    const addProject = await myContract.methods.Project_SetState(
+      id, state, voteThreshold, stake
     )
     .send({from:ethereum.selectedAddress})
   };
 
   const get_State = async () => {
-    let id = document.getElementById('proposaId').value;
+    let id = document.getElementById('proposalId').value;
     let res = [];
-    const r = await myContract.methods.Proposal_GetState(id).call()
+    const r = await myContract.methods.Project_GetState(id).call()
     res.push(r);
     return res;
   }
@@ -138,9 +178,7 @@ function App() {
   let data = [];
   const p = Promise.resolve(get_State());
   p.then(value => {
-      for (let i = 0; i < value[0].length ; i++){
-          data.push((value[0][i].returnValues))
-      }
+    data.push((value[0]))
   })
 
 
@@ -148,19 +186,38 @@ function App() {
     <div style={{ maxWidth: "99.20%" }}>
       <br />
       <Tabs
-        defaultActiveKey="adminTab"
+        defaultActiveKey="proposal"
         id="uncontrolled-tab-example"
         className="mb-3"
         style={{ paddingLeft: "10px" }}
       >
-        <Tab
-          eventKey="adminTab"
-          title="Admin"
+        
+
+              <Tab
+          eventKey="proposal"
+          title="User"
           style={{ paddingLeft: "10px" }}
         >
             <br></br>
             <Row>
-              <Col>
+            <Col>
+                <Card style={{ width: "30rem" }}>
+                  <Card.Header
+                  ><Card.Title>
+                  <b>Register As a User</b>
+                </Card.Title></Card.Header>
+                  <Card.Body>
+                    <Button
+                      variant="success"
+                      onClick={() => register()}
+                    >
+                      Register  
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            
+            <Col>
                 <Card style={{ width: "30rem" }}>
                   <Card.Header
                   ><Card.Title>
@@ -170,67 +227,181 @@ function App() {
                     <Card.Text>
                     {/* Project Name */}
                     <br></br>
-                      <input id="proposalThreshold" placeholder="Proposal Threshold"></input>
+                    Submit a Project proposal
+                    <br></br>
+                      <input id="url" placeholder="Project URL"></input>
                       <br></br>
-                      <br></br>
-                      <input id="votingThreshold" placeholder="Voting Threshold"></input>
-                      <br></br>
-                      <br></br>
-                      <input id="minStakeAmt" placeholder="Minimum stake amount"></input>
                     </Card.Text>
                     <Button
                       variant="success"
                       onClick={() => Project_Add()}
                     >
-                      Submit
+                      Submit 
                     </Button>
                   </Card.Body>
                 </Card>
               </Col>
-
-              <Col>
+            <Col>
                 <Card style={{ width: "30rem" }}>
                   <Card.Header
                   ><Card.Title>
-                  <b>Get Proposal State</b>
+                  <b>Stake Money for a project</b>
                 </Card.Title></Card.Header>
                   <Card.Body>
                     <Card.Text>
-                    {/* Project Name */}
                     <br></br>
-                      <input id="proposaId" placeholder="Proposal ID"></input>
+                      <input id="projectid" placeholder="Project ID"></input>
                       <br></br>
                       <br></br>
-                    <State data = {state.data} ></State>
+                      <input id="amt" placeholder="Amount"></input>
                     </Card.Text>
                     <Button
                       variant="success"
-                      onClick={() => changeState()}
+                      onClick={() => Project_StakeMoney()}
                     >
                       Submit
                     </Button>
                   </Card.Body>
                 </Card>
               </Col>
-              
+
               </Row>
               <br></br>
-              <Row>
+              <br></br>
+
+            <Row>
+            <Col>
+                <Card style={{ width: "30rem" }}>
+                  <Card.Header
+                  ><Card.Title>
+                  <b>Cast Vote</b>
+                </Card.Title></Card.Header>
+                  <Card.Body>
+                    <Card.Text>
+
+                    Project ID:<tab> </tab><input id="projId" placeholder="Project ID"></input>
+                      <br></br>
+                      <br></br>
+                      Vote Type: <tab></tab>
+                    {/* <br></br> */}
+                      <select value={value1} onChange={handleChange1} >
+                        <option value="0">Against</option>
+                        <option value="1">For</option>
+                        <option value="2">Abstain</option>
+                      </select>
+                      <br></br>
+                      <br></br>
+                    </Card.Text>
+                    <Button
+                      variant="success"
+                      onClick={() => vote_Add()}
+                    >
+                      Submit
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              </Row>
+
+              </Tab>
+
+              <Tab
+          eventKey="adminTab"
+          title="Admin"
+          style={{ paddingLeft: "10px" }}
+        >
+            <br></br>
+
+            <Row>
+              <Col>
+              <Card style={{ width: "30rem" }}>
+              <Card.Header
+                  ><Card.Title>
+                  <b>Open Registration</b>
+                </Card.Title></Card.Header>
+                  <Card.Body>
+                    <Button
+                      variant="success"
+                      onClick={() => openRegister()}
+                    >
+                      Register  
+                    </Button>
+                  </Card.Body>
+              </Card>
+              </Col>
+            </Row>
+            <br></br>
+            <br></br>
+            <Row>
+              <Col>
+                <Card style={{ width: "95rem" }}>
+                  <Card.Header
+                  ><Card.Title>
+                  <b>View Project proposals</b>
+                </Card.Title></Card.Header>
+                  <Card.Body>
+                    <Card.Text>
+                      <Projects data = {state2.data}></Projects>
+                    </Card.Text>
+                    <Button
+                      variant="success"
+                      onClick={() => changeState2()}
+                    >
+                      View Projects
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              </Row>
+    <br></br>
+    <Row>
+              <Col>
+                <Card style={{ width: "95rem" }}>
+                  <Card.Header
+                  ><Card.Title>
+                  <b>View Registered Users</b>
+                </Card.Title></Card.Header>
+                  <Card.Body>
+                    <Card.Text>
+                      <Users data = {state3.data}></Users>
+                    </Card.Text>
+                    <Button
+                      variant="success"
+                      onClick={() => changeState3()}
+                    >
+                      View Users
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              </Row>
+    <br></br>
+    <Row>
+              
+              {/* </Row>
+              <br></br>
+              <Row> */}
 
               <Col>
                 <Card style={{ width: "30rem" }}>
                   <Card.Header
                   ><Card.Title>
-                  <b>Set Proposal State</b>
+                  <b>Approve / Reject Project proposals</b>
                 </Card.Title></Card.Header>
                   <Card.Body>
                     <Card.Text>
                     {/* Project Name */}
                     <br></br>
-                      <input id="propoId" placeholder="Proposal ID"></input>
+                    Project ID: <tab></tab><input id="projectId" placeholder="Project ID"></input>
                       <br></br>
                       <br></br>
-                      <select value={value} onChange={handleChange} >
+                    Voting Threshold: <tab></tab><input id="votingThreshold" placeholder="Voting Threshold"></input>
+                      <br></br>
+                      <br></br>
+                    Minimum stake amoount: <tab></tab><input id="minStakeAmt" placeholder="Minimum stake amount"></input>
+                      <br></br>
+                      <br></br>
+                      Project State: <tab></tab><select value={value} onChange={handleChange} >
                         <option value="0">Review</option>
                         <option value="1">Cancelled</option>
                         <option value="2">Voting</option>
@@ -250,11 +421,37 @@ function App() {
                   </Card.Body>
                 </Card>
               </Col>
+
               <Col>
                 <Card style={{ width: "30rem" }}>
                   <Card.Header
                   ><Card.Title>
-                  <b>Close Voting for proposal</b>
+                  <b>Get Project State</b>
+                </Card.Title></Card.Header>
+                  <Card.Body>
+                    <Card.Text>
+                    {/* Project Name */}
+                    <br></br>
+                      <input id="proposalId" placeholder="Project ID"></input>
+                      <br></br>
+                      <br></br>
+                    <State data = {state.data} ></State>
+                    </Card.Text>
+                    <Button
+                      variant="success"
+                      onClick={() => changeState()}
+                    >
+                      Submit
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              
+              <Col>
+                <Card style={{ width: "30rem" }}>
+                  <Card.Header
+                  ><Card.Title>
+                  <b>Close Voting for project proposal</b>
                 </Card.Title></Card.Header>
                   <Card.Body>
                     <Card.Text>
@@ -262,8 +459,6 @@ function App() {
                     <br></br>
                       <input id="projeId" placeholder="Project ID"></input>
                       <br></br>
-                      <br></br>
-                      <input id="proposId" placeholder="Proposal ID"></input>
                       <br></br>
                     </Card.Text>
                     <Button
@@ -279,101 +474,6 @@ function App() {
               </Row>
               </Tab>
 
-
-              <Tab
-          eventKey="proposal"
-          title="User"
-          style={{ paddingLeft: "10px" }}
-        >
-            <br></br>
-            <Row>
-            <Col>
-                <Card style={{ width: "30rem" }}>
-                  <Card.Header
-                  ><Card.Title>
-                  <b>Stake Money for a project</b>
-                </Card.Title></Card.Header>
-                  <Card.Body>
-                    <Card.Text>
-                    {/* Project Name */}
-                    <br></br>
-                      <input id="projectId" placeholder="Project ID"></input>
-                      <br></br>
-                      <br></br>
-                      <input id="amt" placeholder="Amount"></input>
-                    </Card.Text>
-                    <Button
-                      variant="success"
-                      onClick={() => Project_StakeMoney()}
-                    >
-                      Submit
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-
-            <Col>
-                <Card style={{ width: "30rem" }}>
-                  <Card.Header
-                  ><Card.Title>
-                  <b>Add Proposal</b>
-                </Card.Title></Card.Header>
-                  <Card.Body>
-                    <Card.Text>
-                    {/* Project Name */}
-                    <br></br>
-                      <input id="projectid" placeholder="Project ID"></input>
-                      <br></br>
-                      <br></br>
-                    </Card.Text>
-                    <Button
-                      variant="success"
-                      onClick={() => Proposal_Add()}
-                    >
-                      Submit
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-              </Row>
-              <br></br>
-              <br></br>
-
-            <Row>
-            <Col>
-                <Card style={{ width: "30rem" }}>
-                  <Card.Header
-                  ><Card.Title>
-                  <b>Cast Vote</b>
-                </Card.Title></Card.Header>
-                  <Card.Body>
-                    <Card.Text>
-                      Vote Type <tab></tab>
-                    {/* <br></br> */}
-                      <select value={value1} onChange={handleChange1} >
-                        <option value="0">Against</option>
-                        <option value="1">For</option>
-                        <option value="2">Abstain</option>
-                      </select>
-                      <br></br>
-                      <br></br>
-                      <input id="projId" placeholder="Project ID"></input>
-                      <br></br>
-                      <br></br>
-                      <input id="propId" placeholder="Proposal ID"></input>
-                    </Card.Text>
-                    <Button
-                      variant="success"
-                      onClick={() => vote_Add()}
-                    >
-                      Submit
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-              </Row>
-
-              </Tab>
               </Tabs>
               </div>
   );
