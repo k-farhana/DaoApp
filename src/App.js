@@ -108,7 +108,7 @@ function App() {
 
   let data3 = [];
   const x = Promise.resolve(User_view());
-  w.then(value => {
+  x.then(value => {
       for (let i = 0; i < value[0].length ; i++){
           data3.push((value[0][i].returnValues))
       }
