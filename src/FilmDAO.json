@@ -860,6 +860,11 @@
 				"internalType": "uint256",
 				"name": "minStakingAmt",
 				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "proposer",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
