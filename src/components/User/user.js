@@ -7,12 +7,13 @@ import {
     Card,
 } from "react-bootstrap";
 
+import "../CSS/body.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import myContract from '../../contract.js';
-import State from '../../components/state.js'
-import Projects from "../../components/projects";
-import Users from "../../components/users"
+import State from '../state.js'
+import Projects from "../projects";
+import Users from "../users"
 
 
 function User() {
@@ -123,107 +124,80 @@ function User() {
 
     return (
         <>
-            <Row>
-                <Col>
-                    <Card style={{ width: "30rem" }}>
-                        <Card.Header
-                        ><Card.Title>
-                                <b>Register As a User</b>
-                            </Card.Title></Card.Header>
-                        <Card.Body>
-                            <Button
-                                variant="success"
-                                onClick={() => register()}
-                            >
-                                Register
-                            </Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card style={{ width: "30rem" }}>
-                        <Card.Header
-                        ><Card.Title>
-                                <b>Add a project</b>
-                            </Card.Title></Card.Header>
-                        <Card.Body>
-                            <Card.Text>
-                                {/* Project Name */}
-                                <br></br>
-                                Submit a Project proposal
-                                <br></br>
-                                <input id="url" placeholder="Project URL"></input>
-                                <br></br>
-                            </Card.Text>
-                            <Button
-                                variant="success"
-                                onClick={() => Project_Add()}
-                            >
-                                Submit
-                            </Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card style={{ width: "30rem" }}>
-                        <Card.Header
-                        ><Card.Title>
-                                <b>Stake Money for a project</b>
-                            </Card.Title></Card.Header>
-                        <Card.Body>
-                            <Card.Text>
-                                <br></br>
-                                <input id="projectid" placeholder="Project ID"></input>
-                                <br></br>
-                                <br></br>
-                                <input id="amt" placeholder="Amount"></input>
-                            </Card.Text>
-                            <Button
-                                variant="success"
-                                onClick={() => Project_StakeMoney()}
-                            >
-                                Submit
-                            </Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
+            <div className="page-align">
+                <div className="direction">
+                    <div className="card">
+                        <div className="Text-top"><u>Register As a User</u></div>
+                        <Button
+                            variant="success"
+                            onClick={() => register()}
+                        >
+                            Register
+                        </Button>
+                    </div>
+                    <div className="card">
+                        <div className="Text-top"><u>Add Project</u></div>
+                        <Card.Text>
+                            {/* Project Name */}
+                            <br></br>
+                            Submit a Project proposal
+                            <br></br>
+                            <input id="url" placeholder="Project URL"></input>
+                            <br></br>
+                        </Card.Text>
+                        <Button
+                            variant="success"
+                            onClick={() => Project_Add()}
+                        >
+                            Submit
+                        </Button>
+                    </div>
 
-            </Row>
-            <br></br>
-            <br></br>
-            <Row>
-                <Col>
-                    <Card style={{ width: "30rem" }}>
-                        <Card.Header
-                        ><Card.Title>
-                                <b>Cast Vote</b>
-                            </Card.Title></Card.Header>
-                        <Card.Body>
-                            <Card.Text>
+                </div>
+                <div className="direction">
+                    <div className="card">
+                        <div className="Text-top"><u>Stake Money for a project</u></div>
+                        <Card.Text>
+                            <br></br>
+                            <input id="projectid" placeholder="Project ID"></input>
+                            <br></br>
+                            <br></br>
+                            <input id="amt" placeholder="Amount"></input>
+                        </Card.Text>
+                        <Button
+                            variant="success"
+                            onClick={() => Project_StakeMoney()}
+                        >
+                            Submit
+                        </Button>
+                    </div>
+                    <div className="card">
+                        <div className="Text-top"><u>Cast Vote</u></div>
+                        <br></br>
+                        <Card.Text>
 
-                                Project ID:<tab> </tab><input id="projId" placeholder="Project ID"></input>
-                                <br></br>
-                                <br></br>
-                                Vote Type: <tab></tab>
-                                {/* <br></br> */}
-                                <select value={value1} onChange={handleChange1} >
-                                    <option value="0">Against</option>
-                                    <option value="1">For</option>
-                                    <option value="2">Abstain</option>
-                                </select>
-                                <br></br>
-                                <br></br>
-                            </Card.Text>
-                            <Button
-                                variant="success"
-                                onClick={() => vote_Add()}
-                            >
-                                Submit
-                            </Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
+                            Project ID:<tab> </tab><input id="projId" placeholder="Project ID"></input>
+                            <br></br>
+                            <br></br>
+                            Vote Type: <tab></tab>
+                            {/* <br></br> */}
+                            <select value={value1} onChange={handleChange1} >
+                                <option value="0">Against</option>
+                                <option value="1">For</option>
+                                <option value="2">Abstain</option>
+                            </select>
+                            <br></br>
+                            <br></br>
+                        </Card.Text>
+                        <Button
+                            variant="success"
+                            onClick={() => vote_Add()}
+                        >
+                            Submit
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </>
     );
 
