@@ -8,6 +8,9 @@ import {
   NavBtn,
   NavBtnLink,
 } from './NavbarElements';
+import "../CSS/body.css";
+// import image
+import logo from '../images/isb-logo.png';
   
 const Navbar = () => {
   return (

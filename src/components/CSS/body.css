@@ -3,11 +3,35 @@
     flex: 50%;
     height:auto;
     flex-direction: row;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+.direction-home{
+    display: flex;
+    flex: 50%;
+    height:auto;
+    flex-direction: row;
+    margin-left: 11vw;
+    margin-right: 11vw;
 }
 .page-align{
     display: flex;
     flex-direction: column;
     flex: 100%;
+}
+.home-align{
+    margin-top: 30vh;
+}
+.logo{
+    height: 16vh;
+    width: 18vw;
+}
+.logo-align{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
 }
 .card{
     align-items: center;
@@ -38,6 +62,12 @@
     font-weight: 600;
     color: #000;
     padding-bottom: 1vh;
+}
+.bl-logo{
+    height:6vw;
+    width:6vw;
+    padding-bottom: 1vh;
+    background-color: white;
 }
 
 @media (max-width: 800px) {
