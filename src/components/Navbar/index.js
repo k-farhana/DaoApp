@@ -18,7 +18,7 @@ const Navbar = () => {
       <Nav>
         <Bars />
         <NavMenu>
-          <NavLink to='/user' activeStyle>
+          <NavLink to='/' activeStyle>
             User
           </NavLink>
           <NavLink to='/admin' activeStyle>
