@@ -8,6 +8,9 @@ import {
   NavBtn,
   NavBtnLink,
 } from './NavbarElements';
+import "../CSS/body.css";
+// import image
+import logo from '../images/isb-logo.png';
   
 const Navbar = () => {
   return (
@@ -15,7 +18,7 @@ const Navbar = () => {
       <Nav>
         <Bars />
         <NavMenu>
-          <NavLink to='/user' activeStyle>
+          <NavLink to='/' activeStyle>
             User
           </NavLink>
           <NavLink to='/admin' activeStyle>

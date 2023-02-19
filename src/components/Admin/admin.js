@@ -13,6 +13,8 @@ import myContract from '../../contract.js';
 import State from '../state.js'
 import Projects from "../projects";
 import Users from "../users"
+import Navbar from '../Navbar';
+
 
 function Admin() {
 
@@ -127,6 +129,8 @@ function Admin() {
 
     return (
         <>
+            <Navbar />
+            <br/><br/><br/><br/>
             <div className="page-align">
                 <div className="direction">
                     <div className="card">
