@@ -8,8 +8,8 @@ export const Nav = styled.nav`
   display: flex;
   width: 100%;
   margin-bottom: 10vh;
-  justify-content: center;
-  align-items: center;
+  align-items: left;
+  justigy-content: left;
   position: fixed;
   padding: 0.2rem calc((100vw - 1000px) / 2);
   z-index: 12;
@@ -47,9 +47,7 @@ export const Bars = styled(FaBars)`
 `;
   
 export const NavMenu = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: -24px;
+  
   /* Second Nav */
   /* margin-right: 24px; */
   /* Third Nav */

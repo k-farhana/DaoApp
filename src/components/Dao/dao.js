@@ -6,7 +6,8 @@ import {
     Col,
     Card,
 } from "react-bootstrap";
-import "../CSS/body.css"
+
+import "../CSS/body.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import myContract from '../../contract.js';
@@ -16,38 +17,43 @@ import Users from "../users"
 import Navbar from '../Navbar';
 
 
-function Admin() {
-
+function User() {
     useEffect(() => {
         enableMetaMask();
     }, [])
+
     const ethereum = window.ethereum;
-    const [state, getstate] = useState({ data: "" })
-    const getInitialState = () => {
-        const value = "Review";
+
+    const getInitialState1 = () => {
+        const value = "0";
         return value;
     };
-    const changeState = () => {
-        getstate({ data: data });
-    };
 
-    const [value, setValue] = useState(getInitialState);
-    const [state2, setstate2] = useState({ data: "" })
-    const [state3, setstate3] = useState({ data: "" })
+    const [value1, setValue1] = useState(getInitialState1);
 
-    const handleChange = (e) => {
-        setValue(e.target.value);
+    const handleChange1 = (e) => {
+        setValue1(e.target.value);
     };
 
     const enableMetaMask = async () => {
         await ethereum.request({ method: "eth_requestAccounts" });
     };
 
-    const openRegister = async () => {
+    const register = async () => {
         enableMetaMask();
-        const open = await myContract.methods.openReg()
+        const addUser = await myContract.methods.registerUser()
             .send({ from: ethereum.selectedAddress })
     };
+    const Project_Add = async () => {
+        enableMetaMask();
+        let projectUrl = document.getElementById('url').value;
+        const addProject = await myContract.methods.Project_Add(
+            projectUrl
+        )
+            .send({ from: ethereum.selectedAddress })
+    };
+
+
     const Project_view = async () => {
         let results = []
         const result = await myContract.getPastEvents('AddProject', {
@@ -84,35 +90,25 @@ function Admin() {
         }
     })
 
-    const changeState2 = () => {
-        setstate2({ data: data2 });
-    };
-
-    const changeState3 = () => {
-        setstate3({ data: data3 });
-    };
-
-    const closeVote = async () => {
+    const Project_StakeMoney = async () => {
         enableMetaMask();
-        let projeId = document.getElementById('projeId').value;
-        const closevote = await myContract.methods.Project_SetState_CloseVoting(
-            projeId
+        let id = document.getElementById('projectid').value;
+        let amt = document.getElementById('amt').value;
+        const stakeProject = await myContract.methods.Project_StakeMoney(
+            amt, id
         )
             .send({ from: ethereum.selectedAddress })
     };
 
-    const setState = async () => {
+    const vote_Add = async () => {
         enableMetaMask();
-        let id = document.getElementById('projectId').value;
-        let stake = document.getElementById('minStakeAmt').value;
-        let voteThreshold = document.getElementById('votingThreshold').value;
-        const state = value;
-        const addProject = await myContract.methods.Project_SetState(
-            id, state, voteThreshold, stake
+        let votetype = value1;
+        let projId = document.getElementById('projId').value;
+        const addProject = await myContract.methods.Project_CastVote(
+            votetype, projId
         )
             .send({ from: ethereum.selectedAddress })
     };
-
     const get_State = async () => {
         let id = document.getElementById('proposalId').value;
         let res = [];
@@ -126,13 +122,24 @@ function Admin() {
     p.then(value => {
         data.push((value[0]))
     })
+    const [state, getstate] = useState({ data: "" })
+    const changeState = () => {
+        getstate({ data: data });
+    };
+
+    const [state2, setstate2] = useState({ data: "" })
+
+    const changeState2 = () => {
+        setstate2({ data: data2 });
+    };
+
 
     return (
         <>
             <Navbar />
-            <br /><br /><br /><br />
+            <br/><br/><br/><br/>
             <div className="page-align">
-                <div className="direction">
+            <div className="direction">
                     <div className="card">
                         <div className="Text-top"><u>Get Project State</u></div>
                         <Card.Text>
@@ -165,91 +172,82 @@ function Admin() {
                 </div>
                 <div className="direction">
                     <div className="card">
-                        <div className="Text-top"><u>View Regidtered Users</u></div>
-                        <Card.Text>
-                            <Users data={state3.data}></Users>
-                        </Card.Text>
+                        <div className="Text-top"><u>Register As a User</u></div>
                         <Button
                             variant="success"
-                            onClick={() => changeState3()}
+                            onClick={() => register()}
                         >
-                            View Users
+                            Register
                         </Button>
                     </div>
                     <div className="card">
-                        <div className="Text-top"><u>Approve / Reject Project proposals</u></div>
+                        <div className="Text-top"><u>Add Project</u></div>
                         <Card.Text>
                             {/* Project Name */}
                             <br></br>
-                            Project ID: <tab></tab><input id="projectId" placeholder="Project ID"></input>
+                            Submit a Project proposal
+                            <br></br>
+                            <input id="url" placeholder="Project URL"></input>
+                            <br></br>
+                        </Card.Text>
+                        <Button
+                            variant="success"
+                            onClick={() => Project_Add()}
+                        >
+                            Submit
+                        </Button>
+                    </div>
+
+                </div>
+                <div className="direction">
+                    <div className="card">
+                        <div className="Text-top"><u>Stake Money for a project</u></div>
+                        <Card.Text>
+                            <br></br>
+                            <input id="projectid" placeholder="Project ID"></input>
                             <br></br>
                             <br></br>
-                            Voting Threshold: <tab></tab><input id="votingThreshold" placeholder="Voting Threshold"></input>
+                            <input id="amt" placeholder="Amount"></input>
+                        </Card.Text>
+                        <Button
+                            variant="success"
+                            onClick={() => Project_StakeMoney()}
+                        >
+                            Submit
+                        </Button>
+                    </div>
+                    <div className="card">
+                        <div className="Text-top"><u>Cast Vote</u></div>
+                        <br></br>
+                        <Card.Text>
+
+                            Project ID:<tab> </tab><input id="projId" placeholder="Project ID"></input>
                             <br></br>
                             <br></br>
-                            Minimum stake amoount: <tab></tab><input id="minStakeAmt" placeholder="Minimum stake amount"></input>
-                            <br></br>
-                            <br></br>
-                            Project State: <tab></tab><select value={value} onChange={handleChange} >
-                                <option value="0">Review</option>
-                                <option value="1">Cancelled</option>
-                                <option value="2">Voting</option>
-                                <option value="3">Defeated </option>
-                                <option value="4">Succeeded</option>
-                                <option value="5">Accepted</option>
-                                <option value="6">Rejected</option>
+                            Vote Type: <tab></tab>
+                            {/* <br></br> */}
+                            <select value={value1} onChange={handleChange1} >
+                                <option value="0">Against</option>
+                                <option value="1">For</option>
+                                <option value="2">Abstain</option>
                             </select>
-
+                            <br></br>
+                            <br></br>
                         </Card.Text>
                         <Button
                             variant="success"
-                            onClick={() => setState()}
+                            onClick={() => vote_Add()}
                         >
                             Submit
                         </Button>
                     </div>
                 </div>
-                <div className="direction">
-                    <div className="card">
-                        <div className="Text-top"><u>Get Project State</u></div>
-                        <Card.Text>
-                            {/* Project Name */}
-                            <br></br>
-                            <input id="proposalId" placeholder="Project ID"></input>
-                            <br></br>
-                            <br></br>
-                            <State data={state.data} ></State>
-                        </Card.Text>
-                        <Button
-                            variant="success"
-                            onClick={() => changeState()}
-                        >
-                            Submit
-                        </Button>
-                    </div>
-                    <div className="card">
-                        <div className="Text-top"><u>Close Voting for project proposal</u></div>
-                        <Card.Text>
-                            <br></br>
-                            <input id="projeId" placeholder="Project ID"></input>
-                            <br></br>
-                            <br></br>
-                        </Card.Text>
-                        <Button
-                            variant="danger"
-                            onClick={() => closeVote()}
-                        >
-                            Submit
-                        </Button>
-                    </div>
-
-                </div>
-
-
             </div>
         </>
     );
 
+
+
 };
 
-export default Admin;
+export default User;

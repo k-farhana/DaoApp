@@ -10,7 +10,10 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.1",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.7.1",
+    "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
+    "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4",
     "web3": "^1.8.2"
   },
@@ -40,7 +43,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://github.conpmm/farhana-k/Daoo",
+  "homepage": "https://github.conpmm/",
   "devDependencies": {
     "gh-pages": "^5.0.0"
   }

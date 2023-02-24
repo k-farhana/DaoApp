@@ -18,12 +18,7 @@ const Navbar = () => {
       <Nav>
         <Bars />
         <NavMenu>
-          <NavLink to='/user' activeStyle>
-            User
-          </NavLink>
-          <NavLink to='/admin' activeStyle>
-            Admin
-          </NavLink>
+          <div className='Text_product'>Digital Product Labs</div>
         </NavMenu>
       </Nav>
     </>
