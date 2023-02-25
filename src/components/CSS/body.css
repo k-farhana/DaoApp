@@ -41,6 +41,12 @@
     align-items: left;
     margin-left: 2vw;
 }
+h4:hover{
+    color: blue;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
 .card{
     align-items: center;
     position: relative;
@@ -76,6 +82,11 @@
     width:6vw;
     padding-bottom: 1vh;
     background-color: white;
+}
+.bl-logo:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 @media (max-width: 800px) {
