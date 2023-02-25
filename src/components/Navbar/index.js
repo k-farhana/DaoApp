@@ -18,7 +18,7 @@ const Navbar = () => {
       <Nav>
         <Bars />
         <NavMenu>
-          <div className='Text_product'>Digital Product Labs</div>
+          <div className='Text_product'>Digital Assets Labs</div>
         </NavMenu>
       </Nav>
     </>
