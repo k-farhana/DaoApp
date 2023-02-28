@@ -262,7 +262,7 @@ function User() {
                             // code for blue button
                             className="btn_back"
                             // navigate on onClick
-                            onClick={() => window.open( 'https://app.uniswap.org/#swap')}
+                            onClick={() => window.open( 'https://app.uniswap.org/#/swap')}
                         >
                             Swap token
                         </Button>
