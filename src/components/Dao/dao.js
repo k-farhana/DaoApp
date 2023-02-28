@@ -15,6 +15,7 @@ import State from '../state.js'
 import Projects from "../projects";
 import Users from "../users"
 import Navbar from '../Navbar';
+import { Navigate } from "react-router-dom";
 
 
 function User() {
@@ -99,6 +100,7 @@ function User() {
         )
             .send({ from: ethereum.selectedAddress })
     };
+ 
 
     const vote_Add = async () => {
         enableMetaMask();
@@ -117,6 +119,16 @@ function User() {
         return res;
     }
 
+    const add_Project = async () => {
+        let title = document.getElementById('title').value;
+        let description = document.getElementById('description').value;
+        let summ = document.getElementById('summ').value;
+
+        const addProject = await myContract.methods.Project_Add(
+            title, description, summ
+        )
+            .send({ from: ethereum.selectedAddress })
+    };
     let data = [];
     const p = Promise.resolve(get_State());
     p.then(value => {
@@ -137,9 +149,9 @@ function User() {
     return (
         <>
             <Navbar />
-            <br/><br/><br/><br/>
+            <br /><br /><br /><br />
             <div className="page-align">
-            <div className="direction">
+                <div className="direction">
                     <div className="card">
                         <div className="Text-top"><u>Get Project State</u></div>
                         <Card.Text>
@@ -240,6 +252,41 @@ function User() {
                         >
                             Submit
                         </Button>
+                    </div>
+                </div>
+                <div className="direction">
+                    <div className="card">
+                        <div className="Text-top"><u>Click here to Swap Token</u></div>
+                        
+                        <Button
+                            variant="success"
+                            // navigate on onClick
+                            onClick={() => window.open( 'https://app.uniswap.org/#swap')}
+                        >
+                            Swap token
+                        </Button>
+                    </div>
+                    <div className="card">
+                        <div className="Text-top"><u>Add Project</u></div>
+                        <br></br>
+                        <Card.Text>
+                            <input id="title" placeholder="Title"></input>
+                        </Card.Text>
+                        <Card.Text>
+                            <input id="disc" placeholder="Discription"></input>
+                        </Card.Text>
+                        <Card.Text>
+                            <input id="summ" placeholder="Summary"></input>
+                            <br></br>
+                        </Card.Text>
+                        
+                        <Button
+                            variant="success"
+                            onClick={() => add_Project()}
+                        >
+                            Submit
+                        </Button>
+                        <br></br>
                     </div>
                 </div>
             </div>
