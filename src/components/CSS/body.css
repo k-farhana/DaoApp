@@ -28,11 +28,12 @@
     font-weight: 600;
     color: white;
     margin-top: 1.8vh;
-    margin-left: -15vw;;
+
+    margin-left: 1vw;;
 }
 .logo{
-    height: 13vh;
-    width: 15vw;
+    height: 10vh;
+    width: 12vw;
 }
 .logo-align{
     display: flex;
@@ -84,6 +85,17 @@ h4:hover{
     background-color: white;
 }
 .bl-logo:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+.btn_back{
+    background-color: #2385a5 !important;
+    color: white !important;
+}
+.btn_back:hover{
+    background-color: green !important;
+    color: white !important;
     transform: scale(1.05);
     transition: all 0.3s ease-in-out;
     cursor: pointer;

@@ -9,8 +9,8 @@ import {
   NavBtnLink,
 } from './NavbarElements';
 import "../CSS/body.css";
-// import image
 import logo from '../images/isb-logo.png';
+
   
 const Navbar = () => {
   return (
@@ -18,6 +18,7 @@ const Navbar = () => {
       <Nav>
         <Bars />
         <NavMenu>
+          <div className='logo-align'><img className='logo' src={logo} alt="logo" /></div>
           <div className='Text_product'>Digital Assets Labs</div>
         </NavMenu>
       </Nav>

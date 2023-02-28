@@ -163,7 +163,7 @@ function User() {
                             <State data={state.data} ></State>
                         </Card.Text>
                         <Button
-                            variant="success"
+                            className="btn_back"
                             onClick={() => changeState()}
                         >
                             Submit
@@ -175,7 +175,7 @@ function User() {
                             <Projects data={state2.data}></Projects>
                         </Card.Text>
                         <Button
-                            variant="success"
+                            className="btn_back"
                             onClick={() => changeState2()}
                         >
                             View Projects
@@ -186,7 +186,7 @@ function User() {
                     <div className="card">
                         <div className="Text-top"><u>Register As a User</u></div>
                         <Button
-                            variant="success"
+                            className="btn_back"
                             onClick={() => register()}
                         >
                             Register
@@ -203,7 +203,7 @@ function User() {
                             <br></br>
                         </Card.Text>
                         <Button
-                            variant="success"
+                            className="btn_back"
                             onClick={() => Project_Add()}
                         >
                             Submit
@@ -222,7 +222,7 @@ function User() {
                             <input id="amt" placeholder="Amount"></input>
                         </Card.Text>
                         <Button
-                            variant="success"
+                            className="btn_back"
                             onClick={() => Project_StakeMoney()}
                         >
                             Submit
@@ -244,10 +244,10 @@ function User() {
                                 <option value="2">Abstain</option>
                             </select>
                             <br></br>
-                            <br></br>
                         </Card.Text>
                         <Button
-                            variant="success"
+                            className="btn_back"
+                            // button of slightly blue color
                             onClick={() => vote_Add()}
                         >
                             Submit
@@ -257,9 +257,10 @@ function User() {
                 <div className="direction">
                     <div className="card">
                         <div className="Text-top"><u>Click here to Swap Token</u></div>
-                        
+                    
                         <Button
-                            variant="success"
+                            // code for blue button
+                            className="btn_back"
                             // navigate on onClick
                             onClick={() => window.open( 'https://app.uniswap.org/#swap')}
                         >
@@ -270,18 +271,18 @@ function User() {
                         <div className="Text-top"><u>Add Project</u></div>
                         <br></br>
                         <Card.Text>
-                            <input id="title" placeholder="Title"></input>
+                        Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="title" placeholder="Title"></input>
                         </Card.Text>
                         <Card.Text>
-                            <input id="disc" placeholder="Discription"></input>
+                        Discription:<tab> </tab><input id="disc" placeholder="Discription"></input>
                         </Card.Text>
                         <Card.Text>
-                            <input id="summ" placeholder="Summary"></input>
+                        Summary:&nbsp;<tab> </tab><input id="summ" placeholder="Summary"></input>
                             <br></br>
                         </Card.Text>
                         
                         <Button
-                            variant="success"
+                            className="btn_back"
                             onClick={() => add_Project()}
                         >
                             Submit

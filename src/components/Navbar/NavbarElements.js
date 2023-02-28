@@ -10,8 +10,8 @@ export const Nav = styled.nav`
   margin-bottom: 10vh;
   align-items: left;
   justigy-content: left;
+  top:0;
   position: fixed;
-  padding: 0.2rem calc((100vw - 1000px) / 2);
   z-index: 12;
   /* Third Nav */
   /* justify-content: flex-start; */
@@ -21,6 +21,7 @@ export const NavLink = styled(Link)`
   color: white;
   display: flex;
   align-items: center;
+  flex-direction: column;
   text-decoration: none;
   padding: 0 1rem;
   height: 100%;
@@ -53,6 +54,8 @@ export const NavMenu = styled.div`
   /* Third Nav */
   /* width: 100vw;
   white-space: nowrap; */
+  flex-direction: row;
+  display: flex;
   @media screen and (max-width: 768px) {
     display: none;
   }
