@@ -16,6 +16,7 @@ import Projects from "../projects";
 import Users from "../users"
 import Navbar from '../Navbar';
 import { Navigate } from "react-router-dom";
+import axios from 'axios';  
 
 
 function User() {
@@ -120,15 +121,34 @@ function User() {
     }
 
     const add_Project = async () => {
-        let title = document.getElementById('title').value;
-        let description = document.getElementById('description').value;
-        let summ = document.getElementById('summ').value;
+        // let title = document.getElementById('title').value;
+        // let description = document.getElementById('description').value;
+        // let summ = document.getElementById('summ').value;
+
+        let file = document.getElementById('file').files[0];
+    
+        console.log(file);
+        const formData = new FormData();
+        formData.append('file',file);
+
+        let res = await axios.post('http://localhost:3000/upload', formData);
+
+        let hash = res.data.fileHash;
+        let _votingThreshold="200";
+        let _minStakingAmt="100";
+        let _closingTime="100";
+        let _hash=hash;
+
 
         const addProject = await myContract.methods.Project_Add(
-            title, description, summ
+            _votingThreshold,
+            _minStakingAmt,
+            _closingTime,
+            _hash=hash
         )
             .send({ from: ethereum.selectedAddress })
     };
+    
     let data = [];
     const p = Promise.resolve(get_State());
     p.then(value => {
@@ -270,6 +290,7 @@ function User() {
                     <div className="card">
                         <div className="Text-top"><u>Add Project</u></div>
                         <br></br>
+                        <Card.Text><input type="file" id="file" name="file" /></Card.Text>
                         <Card.Text>
                         Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="title" placeholder="Title"></input>
                         </Card.Text>
