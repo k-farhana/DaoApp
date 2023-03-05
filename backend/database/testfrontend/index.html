@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File Upload Example</title>
+  </head>
+  <body>
+    <form>
+      <input type="file" id="file-input">
+      <button type="submit" id="submit-button">Upload</button>
+    </form>
+    <script>
+      const form = document.querySelector('form');
+      const fileInput = document.querySelector('#file-input');
+      const submitButton = document.querySelector('#submit-button');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          const response = await fetch('http://localhost:5000/upload', {
+            method: 'POST',
+            body: formData
+          });
+          const result = await response.json();
+
+          if (response.ok) {
+            console.log('File uploaded successfully');
+            console.log(result);
+          } else {
+            console.error('Error uploading file');
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    </script>
+  </body>
+</html>
