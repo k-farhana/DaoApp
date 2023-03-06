@@ -40,13 +40,18 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
     uint256 amount;
   }
 
-  mapping(uint256 => address) internal users;
+    struct againstVote{
+    address add;
+    uint256 amount;
+  }
+
   mapping(uint256 => uint256) public ForWeight;
   mapping(uint256 => uint256) public AgainstWeight;
   mapping(uint256 => address[] ) public ForVoters;
   mapping(uint256 => address[]) public AgainstVoters;
   mapping(uint256 => address[]) public AbstainVoters;
   mapping(uint256 => forVote) public forVotes;
+  mapping(uint256 => againstVote) public againstVotes;
   mapping(uint256 => mapping(address => bool)) public ProjectVoters;
   mapping(uint256 => mapping(address => uint256)) public StakedAmounts;
   mapping(uint256 => Project) public Projects;
@@ -73,21 +78,23 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
       Projects[ProjectsCount].time = block.timestamp;
       Projects[ProjectsCount].closingTime = _closingTime;
       Projects[ProjectsCount].state = 0;
-      Projects[ProjectsCount].closed = false;
+      // Projects[ProjectsCount].closed = false;
       Projects[ProjectsCount].hashData = _hash;
     }
     emit AddProject(ProjectsCount, msg.sender, _minStakingAmt, _votingThresholdAmt, _closingTime);
     return ProjectsCount;
   }
 
+
   function Project_StakeMoney(uint256 _amount, uint256 _projectID) public  {
     require((_projectID <= ProjectsCount) && (_projectID > 0), 'Invalid Project ID' );
-    require(balanceOf(msg.sender)  + StakedAmounts[_projectID][msg.sender] > Projects[ProjectsCount].minStakingAmt, 'Insufficient Token balance');
-    require(_amount > 0, 'Invalid Amount.');
+    require(balanceOf(msg.sender) - allowance(msg.sender,admin) >= Projects[ProjectsCount].minStakingAmt, 'Insufficient Token balance');
+    require(_amount <= balanceOf(msg.sender) - allowance(msg.sender,admin) && _amount > 0, 'Insufficient Token balance');
     require(StakedAmounts[_projectID][msg.sender] + _amount >= Projects[ProjectsCount].minStakingAmt, 'Low staking amount');
     require(timesUp(_projectID) == false, 'Cannot stake beyond closing period');
     require(Projects[_projectID].closed == false, 'Project closed');
         unchecked {
+                increaseAllowance(admin,_amount);
                 Projects[_projectID].stakedAmount += _amount;
                 if (StakedAmounts[_projectID][msg.sender] == 0) {
                   Projects[_projectID].stakersCount += 1;
@@ -95,33 +102,6 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
                 StakedAmounts[_projectID][msg.sender] += _amount;
               }
   }
-
-  function closeVoting(uint256 _projectID) public returns(bool){
-    require((_projectID <= ProjectsCount) && (_projectID > 0), 'Invalid Project ID' );
-    require(msg.sender == Projects[_projectID].proposer, 'Only project proposer can close proposal');
-    require(Projects[_projectID].closed == false, 'Project already closed');
-    require(timesUp(_projectID) == true, 'Please wait till proposal closing time');
-
-        uint256 nForWeight;
-        uint256 nAgainstWeight;
-
-        nAgainstWeight = AgainstWeight[_projectID];
-        nForWeight = ForWeight[_projectID];
-
-        if (nForWeight >= nAgainstWeight) {
-          Projects[_projectID].state = 2;
-          for(uint i=0; i<ForVoters[_projectID].length; i++){
-            this.transferFrom(ForVoters[_projectID][i], Projects[_projectID].proposer, StakedAmounts[_projectID][forVotes[_projectID].add]);
-          }
-        } else {
-          Projects[_projectID].state = 1;
-          for(uint i=0; i<ForVoters[_projectID].length; i++){
-            this.transferFrom(ForVoters[_projectID][i], ForVoters[_projectID][i] , StakedAmounts[_projectID][forVotes[_projectID].add]);
-          }
-        }
-        Projects[_projectID].closed = true;
-  }
-
 
   function Project_CastVote(uint8 _voteType, uint256 _projectID) public  {
     require((_projectID <= ProjectsCount) && (_projectID > 0), 'Invalid Project ID' );
@@ -139,18 +119,42 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
           if (_voteType == uint8(VoteType.Against)) {
             AgainstVoters[_projectID].push(msg.sender);
             AgainstWeight[_projectID] += StakedAmounts[_projectID][msg.sender];
+            againstVotes[_projectID].add = msg.sender;
+            againstVotes[_projectID].amount = StakedAmounts[_projectID][msg.sender];
 
           } else if (_voteType == uint8(VoteType.For)) {
             ForVoters[_projectID].push(msg.sender);
             forVotes[_projectID].add = msg.sender;
             forVotes[_projectID].amount = StakedAmounts[_projectID][msg.sender];
             ForWeight[_projectID] += StakedAmounts[_projectID][msg.sender];
-            approve(address(this), StakedAmounts[_projectID][msg.sender] * 10**18);
           } else if (_voteType == uint8(VoteType.Abstain)) {
             AbstainVoters[_projectID].push(msg.sender);
           } else {
               revert("invalid value for VoteType");
           }
+  }
+
+  function closeVoting(uint256 _projectID) public {
+    require(msg.sender == admin, 'only admin can close voting');
+    require((_projectID <= ProjectsCount) && (_projectID > 0), 'Invalid Project ID' );
+    require(Projects[_projectID].closed == false, 'Project already closed');
+    require(timesUp(_projectID) == true, 'Please wait till proposal closing time');
+
+        uint256 nForWeight;
+        uint256 nAgainstWeight;
+
+        nAgainstWeight = AgainstWeight[_projectID];
+        nForWeight = ForWeight[_projectID];
+
+        if (nForWeight >= nAgainstWeight) {
+          Projects[_projectID].state = 2;
+          for(uint i=0; i<ForVoters[_projectID].length; i++){
+            transferFrom(forVotes[_projectID].add, Projects[_projectID].proposer, StakedAmounts[_projectID][forVotes[_projectID].add]);
+          }
+        } else {
+          Projects[_projectID].state = 1;
+        }
+        Projects[_projectID].closed = true;
   }
 
   function getProposalDetails(uint256 _projectID) public view returns( Project memory){
@@ -177,18 +181,61 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
     return (block.timestamp >= (Projects[_projectID].time + Projects[_projectID].closingTime ));
   }
 
-  function Project_UnStakeMoney(uint256 _amount, uint256 _projectID) public  {
+  function Project_unStakeMoney(uint256 _amount, uint256 _projectID) public  {
         require((_projectID <= ProjectsCount) && (_projectID > 0), 'Invalid Project ID' );
-        require(ProjectVoters[_projectID][msg.sender] == false, 'Cannot unstake after voting');
         require((StakedAmounts[_projectID][msg.sender] - _amount >= 0 && _amount > 0), 'Not a stake holder / invalid amount');
-        unchecked {
+        if(ProjectVoters[_projectID][msg.sender] == false){
+          unchecked {
                 Projects[_projectID].stakedAmount -= _amount;
                 if (StakedAmounts[_projectID][msg.sender] == 0) {
                   Projects[_projectID].stakersCount -= 1;
                 }     
                 StakedAmounts[_projectID][msg.sender] -= _amount;
+                decreaseAllowance(admin, _amount);
               }
+        }else{
+          if(Projects[_projectID].closed = true){
+              if(Projects[_projectID].state == 1){
+            unchecked {
+                Projects[_projectID].stakedAmount -= _amount;
+                if (StakedAmounts[_projectID][msg.sender] == 0) {
+                  Projects[_projectID].stakersCount -= 1;
+                }     
+                StakedAmounts[_projectID][msg.sender] -= _amount;
+                decreaseAllowance(admin, _amount);
+              }
+              }else if(Projects[_projectID].state == 2){
+                if(exists(_projectID, msg.sender)){
+                  unchecked {
+                    Projects[_projectID].stakedAmount -= _amount;
+                    if (StakedAmounts[_projectID][msg.sender] == 0) {
+                      Projects[_projectID].stakersCount -= 1;
+                    }     
+                    StakedAmounts[_projectID][msg.sender] -= _amount;
+                    decreaseAllowance(admin, _amount);
+                  }
+                }
+                else{
+                  revert("Amount transferred!!");
+                }
+              }else{
+                revert("invalid project state");
+              }
+          }else{
+            revert("Please wait untill project closes");
+          }
+          
+        }
   }
+
+  function exists(uint256 _projectID, address add) public view returns (bool) {
+    for (uint i = 0; i < AgainstVoters[_projectID].length; i++) {
+        if (AgainstVoters[_projectID][i] == add) {
+            return true;
+        }
+    }
+    return false;
+}
 
   function viewAllProjects() public view returns( Project[] memory){
     Project[]    memory id = new Project[](ProjectsCount);
@@ -197,6 +244,18 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
           id[i] = project;
       }
       return id;
+  }
+
+  function transferToContributor(address _contributor, uint256 _amount) public{
+    transfer(_contributor, _amount);
+  }
+
+  function addOrder(uint256 _amount) public {
+    transfer(admin, _amount);
+  }
+
+  function getProjectCount() public view returns(uint256){
+    return ProjectsCount;
   }
  
   fallback() external  {
