@@ -26,13 +26,63 @@
 .Text_product{
     font-size: 2.4rem;
     font-weight: 600;
-    color: white;
-    margin-top: 1.8vh;
+    /* color: white; */
+    margin-top: 2.4vh;
 
     margin-left: 1vw;;
 }
+.Text_product1{
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 4.5vh;
+    margin-left: .9vw;;
+}
+.Dow_text{
+    font-size: 2.1rem;
+    font-weight: 600;
+    color: #2385a5;
+    margin-top:1.8vh;
+    margin-left: 18.5vw;
+}
+.top_align_nav{
+    left:20vw;
+    display: flex;
+    flex-direction: column !important;
+    /* justify-content: right !important;
+    align-items: right !important; */
+    margin-left: 1vw;
+    margin-right: 1vw;
+    width: auto;
+    margin-top: 1vh;
+}
+.About_text{
+    /* justify-content: right;
+    align-items: right; */
+    padding-left:53vw;
+    font-size: 1.1em;
+}
+.nft_text{
+    justify-content: right;
+    align-items: right;   
+    padding-left: 1vw;
+    font-size: 1.1em;
+}
+.page2_text_step{
+    position: relative;
+    /* padding-top:2vh; */
+    padding-left: 1.5vw;
+    font-size: .8em;
+    /* padding-bottom: -14vh; */
+    color: grey;
+}
+.About_text:hover{
+    color: blue;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
 .logo{
-    height: 10vh;
+    height: 11vh;
     width: 12vw;
 }
 .logo-align{
@@ -90,11 +140,11 @@ h4:hover{
     cursor: pointer;
 }
 .btn_back{
-    background-color: #2385a5 !important;
+    background-color: black !important;
     color: white !important;
 }
 .btn_back:hover{
-    background-color: green !important;
+    background-color: #2385a5 !important;
     color: white !important;
     transform: scale(1.05);
     transition: all 0.3s ease-in-out;

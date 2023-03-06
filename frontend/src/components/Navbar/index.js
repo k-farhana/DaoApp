@@ -19,7 +19,8 @@ const Navbar = () => {
         <Bars />
         <NavMenu>
           <div className='logo-align'><img className='logo' src={logo} alt="logo" /></div>
-          <div className='Text_product'>Digital Assets Labs</div>
+          <div className='Text_product1'>Digital Assets Labs</div>
+          <div className='Dow_text'>DAO</div>
         </NavMenu>
       </Nav>
     </>

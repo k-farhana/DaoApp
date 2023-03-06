@@ -13,10 +13,12 @@ import { useState, useEffect } from "react";
 import myContract from '../../contract.js';
 import State from '../state.js'
 import Projects from "../projects";
+import Display from "../project";
 import Users from "../users"
 import Navbar from '../Navbar';
 import { Navigate } from "react-router-dom";
-import axios from 'axios';  
+import axios from 'axios';
+
 
 
 function User() {
@@ -24,6 +26,8 @@ function User() {
         enableMetaMask();
     }, [])
 
+    const [all_projects, setall_projects] = useState("0");
+    const [Project_state, setProject_state] = useState("0");
     const ethereum = window.ethereum;
 
     const getInitialState1 = () => {
@@ -41,34 +45,9 @@ function User() {
         await ethereum.request({ method: "eth_requestAccounts" });
     };
 
-    const register = async () => {
-        enableMetaMask();
-        const addUser = await myContract.methods.registerUser()
-            .send({ from: ethereum.selectedAddress })
-    };
-    const Project_Add = async () => {
-        enableMetaMask();
-        let projectUrl = document.getElementById('url').value;
-        const addProject = await myContract.methods.Project_Add(
-            projectUrl
-        )
-            .send({ from: ethereum.selectedAddress })
-    };
-
-
     const Project_view = async () => {
         let results = []
         const result = await myContract.getPastEvents('AddProject', {
-            fromBlock: 0,
-            toBlock: 'latest'
-        });
-        results.push(result);
-        return results;
-    };
-
-    const User_view = async () => {
-        let results = []
-        const result = await myContract.getPastEvents('AddUser', {
             fromBlock: 0,
             toBlock: 'latest'
         });
@@ -84,14 +63,6 @@ function User() {
         }
     })
 
-    let data3 = [];
-    const x = Promise.resolve(User_view());
-    x.then(value => {
-        for (let i = 0; i < value[0].length; i++) {
-            data3.push((value[0][i].returnValues))
-        }
-    })
-
     const Project_StakeMoney = async () => {
         enableMetaMask();
         let id = document.getElementById('projectid').value;
@@ -101,7 +72,16 @@ function User() {
         )
             .send({ from: ethereum.selectedAddress })
     };
- 
+
+    const Project_unStakeMoney = async () => {
+        enableMetaMask();
+        let id = document.getElementById('projectid').value;
+        let amt = document.getElementById('amt').value;
+        const unstakeProject = await myContract.methods.Project_UnStakeMoney(
+            amt, id
+        )
+            .send({ from: ethereum.selectedAddress })
+    };
 
     const vote_Add = async () => {
         enableMetaMask();
@@ -112,43 +92,86 @@ function User() {
         )
             .send({ from: ethereum.selectedAddress })
     };
+
+    const closeVote = async () => {
+        enableMetaMask();
+        let projId = document.getElementById('projId').value;
+        const addProject = await myContract.methods.closeVoting(
+            projId
+        )
+            .send({ from: ethereum.selectedAddress })
+    };
+
+
     const get_State = async () => {
         let id = document.getElementById('proposalId').value;
         let res = [];
-        const r = await myContract.methods.Project_GetState(id).call()
+        const r = await myContract.methods.getProposalState(id).call()
         res.push(r);
+        setProject_state(res);
+        console.log(res)
         return res;
     }
 
+    const allProjects = async () => {
+        let id = document.getElementById('proposalId').value;
+        let res = [];
+        const r = await myContract.methods.viewAllProjects().call()
+        res.push(r);
+        console.log(res)
+        setall_projects(res);
+        return res;
+    }
+
+
     const add_Project = async () => {
-        // let title = document.getElementById('title').value;
-        // let description = document.getElementById('description').value;
-        // let summ = document.getElementById('summ').value;
+        let _votingThreshold = document.getElementById('_votingThreshold').value;
+        let _minStakingAmt = document.getElementById('_minStakingAmt').value;
+        let _closingTime = document.getElementById('time').value;
 
         let file = document.getElementById('file').files[0];
-    
+
         console.log(file);
         const formData = new FormData();
-        formData.append('file',file);
+        formData.append('file', file);
 
-        let res = await axios.post('http://localhost:3000/upload', formData);
+        let res;
+        try {
+            const response = await fetch('http://localhost:5000/upload', {
+                method: 'POST',
+                body: formData
+            });
+            // res = await response;
+            res = await response.json();
+            console.log(res)
+            if (response.ok) {
+                console.log('File uploaded successfully');
+                //  console.log(res);
+                let _hash = res.fileHash;
+                console.log(_hash)
+            }
+            else {
+                console.error('Error uploading file');
+            }
+        }
+        catch (err) {
+            console.error(err);
+        }
 
-        let hash = res.data.fileHash;
-        let _votingThreshold="200";
-        let _minStakingAmt="100";
-        let _closingTime="100";
-        let _hash=hash;
-
+        console.log(res)
+        let _hash = res.fileHash;
 
         const addProject = await myContract.methods.Project_Add(
             _votingThreshold,
             _minStakingAmt,
             _closingTime,
-            _hash=hash
+            _hash
         )
             .send({ from: ethereum.selectedAddress })
+
     };
-    
+
+
     let data = [];
     const p = Promise.resolve(get_State());
     p.then(value => {
@@ -175,7 +198,6 @@ function User() {
                     <div className="card">
                         <div className="Text-top"><u>Get Project State</u></div>
                         <Card.Text>
-                            {/* Project Name */}
                             <br></br>
                             <input id="proposalId" placeholder="Project ID"></input>
                             <br></br>
@@ -190,6 +212,21 @@ function User() {
                         </Button>
                     </div>
                     <div className="card">
+                        <div className="Text-top"><u>Click here to Swap Token</u></div>
+
+                        <Button
+                            // code for blue button
+                            className="btn_back"
+                            // navigate on onClick
+                            onClick={() => window.open('https://app.uniswap.org/#/swap')}
+                        >
+                            Swap token
+                        </Button>
+                    </div>
+                </div>
+                <div className="direction">
+
+                    <div className="card">
                         <div className="Text-top"><u>View Project Proposals</u></div>
                         <Card.Text>
                             <Projects data={state2.data}></Projects>
@@ -201,30 +238,14 @@ function User() {
                             View Projects
                         </Button>
                     </div>
-                </div>
-                <div className="direction">
                     <div className="card">
-                        <div className="Text-top"><u>Register As a User</u></div>
-                        <Button
-                            className="btn_back"
-                            onClick={() => register()}
-                        >
-                            Register
-                        </Button>
-                    </div>
-                    <div className="card">
-                        <div className="Text-top"><u>Add Project</u></div>
+                        <div className="Text-top"><u>Get All Projects</u></div>
                         <Card.Text>
-                            {/* Project Name */}
-                            <br></br>
-                            Submit a Project proposal
-                            <br></br>
-                            <input id="url" placeholder="Project URL"></input>
-                            <br></br>
+                            <Display data={all_projects}></Display>
                         </Card.Text>
                         <Button
                             className="btn_back"
-                            onClick={() => Project_Add()}
+                            onClick={() => allProjects()}
                         >
                             Submit
                         </Button>
@@ -248,6 +269,32 @@ function User() {
                             Submit
                         </Button>
                     </div>
+                    <div className="card">
+                        <div className="Text-top"><u>Add Project</u></div>
+                        <br></br>
+                        <Card.Text><input type="file" id="file" name="file" /></Card.Text>
+                        <Card.Text>
+                            Voting Threshold:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="_votingThreshold" placeholder="Voting threshold"></input>
+                        </Card.Text>
+                        <Card.Text>
+                            Minimum staking amount:<tab> </tab><input id="_minStakingAmt" placeholder="Min stake amount"></input>
+                        </Card.Text>
+                        <Card.Text>
+                            Closing time:&nbsp;<tab> </tab><input id="time" placeholder="Time"></input>
+                            <br></br>
+                        </Card.Text>
+
+                        <Button
+                            className="btn_back"
+                            onClick={() => add_Project()}
+                        >
+                            Submit
+                        </Button>
+                        <br></br>
+                    </div>
+                </div>
+
+                <div className="direction">
                     <div className="card">
                         <div className="Text-top"><u>Cast Vote</u></div>
                         <br></br>
@@ -273,42 +320,35 @@ function User() {
                             Submit
                         </Button>
                     </div>
-                </div>
-                <div className="direction">
                     <div className="card">
-                        <div className="Text-top"><u>Click here to Swap Token</u></div>
-                    
+                        <div className="Text-top"><u>Close Project</u></div>
+                        Project ID:<tab> </tab><input id="projId" placeholder="Project ID"></input>
+                        <br />
                         <Button
                             // code for blue button
                             className="btn_back"
                             // navigate on onClick
-                            onClick={() => window.open( 'https://app.uniswap.org/#/swap')}
+                            onClick={() => closeVote()}
                         >
-                            Swap token
+                            Close Token
                         </Button>
                     </div>
+
                     <div className="card">
-                        <div className="Text-top"><u>Add Project</u></div>
-                        <br></br>
-                        <Card.Text><input type="file" id="file" name="file" /></Card.Text>
+                        <div className="Text-top"><u>Unstake Money</u></div>
                         <Card.Text>
-                        Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="title" placeholder="Title"></input>
-                        </Card.Text>
-                        <Card.Text>
-                        Discription:<tab> </tab><input id="disc" placeholder="Discription"></input>
-                        </Card.Text>
-                        <Card.Text>
-                        Summary:&nbsp;<tab> </tab><input id="summ" placeholder="Summary"></input>
                             <br></br>
+                            <input id="projectid" placeholder="Project ID"></input>
+                            <br></br>
+                            <br></br>
+                            <input id="amt" placeholder="Amount"></input>
                         </Card.Text>
-                        
                         <Button
                             className="btn_back"
-                            onClick={() => add_Project()}
+                            onClick={() => Project_unStakeMoney()}
                         >
                             Submit
                         </Button>
-                        <br></br>
                     </div>
                 </div>
             </div>

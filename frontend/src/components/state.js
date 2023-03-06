@@ -4,7 +4,9 @@ export default function State(props) {
             return (
                 <div>
                     <h1>Review</h1>
+                    <h2><b></b></h2>
                 </div>
+                
               );
         }
         else if(props.data == 1){
