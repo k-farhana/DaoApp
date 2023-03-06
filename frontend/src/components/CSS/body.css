@@ -1,0 +1,111 @@
+.direction{
+    display: flex;
+    flex: 50%;
+    height:auto;
+    flex-direction: row;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+.direction-home{
+    display: flex;
+    flex: 50%;
+    height:auto;
+    flex-direction: row;
+    margin-left: 11vw;
+    margin-right: 11vw;
+}
+.page-align{
+    display: flex;
+    flex-direction: column;
+    flex: 100%;
+}
+.home-align{
+    margin-top: 30vh;
+}
+
+.Text_product{
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: white;
+    margin-top: 1.8vh;
+
+    margin-left: 1vw;;
+}
+.logo{
+    height: 10vh;
+    width: 12vw;
+}
+.logo-align{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: left;
+    margin-left: 2vw;
+}
+h4:hover{
+    color: blue;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+.card{
+    align-items: center;
+    position: relative;
+    background-color: white;
+    margin-left: 1vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    margin-right: 1vw;
+    border-radius: 1vw;
+    width: 100%;
+    margin-bottom: 2vh;
+    justify-content: center;
+    /* height: auto !important; */
+    background: #eee;
+    box-shadow: 0 8px 8px -4px lightblue;
+}
+
+.card:hover{
+    box-shadow: 0 8px 8px -4px lightblue;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+
+.Text-top{
+    font-size: 1.2rem;
+    font-family:"Times New Roman", Times, serif;;
+    font-weight: 600;
+    color: #000;
+    padding-bottom: 1vh;
+}
+.bl-logo{
+    height:6vw;
+    width:6vw;
+    padding-bottom: 1vh;
+    background-color: white;
+}
+.bl-logo:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+.btn_back{
+    background-color: #2385a5 !important;
+    color: white !important;
+}
+.btn_back:hover{
+    background-color: green !important;
+    color: white !important;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+@media (max-width: 800px) {
+    .direction{
+        display: flex;
+        flex: 100%;
+        height:auto;
+        flex-direction: column;
+    }
+  }
