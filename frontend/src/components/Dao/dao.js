@@ -95,7 +95,7 @@ function User() {
 
     const closeVote = async () => {
         enableMetaMask();
-        let projId = document.getElementById('projId').value;
+        let projId = document.getElementById('cprojId').value;
         const addProject = await myContract.methods.closeVoting(
             projId
         )
@@ -108,7 +108,7 @@ function User() {
         let res = [];
         const r = await myContract.methods.getProposalState(id).call()
         res.push(r);
-        setProject_state(res);
+        // setProject_state(res);
         console.log(res)
         return res;
     }
@@ -125,6 +125,7 @@ function User() {
 
 
     const add_Project = async () => {
+        enableMetaMask();
         let _votingThreshold = document.getElementById('_votingThreshold').value;
         let _minStakingAmt = document.getElementById('_minStakingAmt').value;
         let _closingTime = document.getElementById('time').value;
@@ -137,7 +138,7 @@ function User() {
 
         let res;
         try {
-            const response = await fetch('http://localhost:5000/upload', {
+            const response = await fetch('http://localhost:5001/upload', {
                 method: 'POST',
                 body: formData
             });
@@ -157,18 +158,15 @@ function User() {
         catch (err) {
             console.error(err);
         }
-
-        console.log(res)
         let _hash = res.fileHash;
-
-        const addProject = await myContract.methods.Project_Add(
-            _votingThreshold,
-            _minStakingAmt,
-            _closingTime,
-            _hash
-        )
-            .send({ from: ethereum.selectedAddress })
-
+        
+            const addProject = await myContract.methods.Project_Add(
+                _votingThreshold,
+                _minStakingAmt,
+                _closingTime,
+                _hash
+            ).send({ from: ethereum.selectedAddress })
+         
     };
 
 
@@ -322,7 +320,7 @@ function User() {
                     </div>
                     <div className="card">
                         <div className="Text-top"><u>Close Project</u></div>
-                        Project ID:<tab> </tab><input id="projId" placeholder="Project ID"></input>
+                        Project ID:<tab> </tab><input id="cprojId" placeholder="Project ID"></input>
                         <br />
                         <Button
                             // code for blue button

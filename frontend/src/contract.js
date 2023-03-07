@@ -9,7 +9,7 @@ import FilmDAO from "./FilmDAO.json"
   // const ContractAddress = '0xB43CE4eaa984b7D52D592Fc17e5576945d80f3c3';
   // const ContractAddress = '0xe77D0E7DC1aF594b0d553bA866Cb703C181890A0';
   // 0x865f3Db161fE4089bc15f8044D6066b324B8f2F2
-  const ContractAddress = '0x1Fc68a0119e2798490c7aeAdBc80991aAb39e2bB';
+  const ContractAddress = '0x9412eaaDc0A5B2883304e5bc022A2971a24076F0';
   const ContractAbi = FilmDAO;
 
   const myContract = new web3.eth.Contract(

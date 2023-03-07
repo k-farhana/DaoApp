@@ -45,7 +45,7 @@ const Navbar1 = () => {
                     </div>
                     <div className='card' >
                         <img className='bl-logo' src={image} />
-                        <h4><u>Metaverse For Life</u></h4>
+                        <h4><u>Metaverse For Learning</u></h4>
                     </div>
                     <div className='card'>
                         <h4><u>Blockchain Impact</u></h4>

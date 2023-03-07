@@ -1,5 +1,18 @@
 [
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "addOrder",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
@@ -21,37 +34,24 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "string",
-				"name": "url",
-				"type": "string"
+				"internalType": "uint256",
+				"name": "_minStakingAmt",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "votingThresholdAmt",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "closingTime",
+				"type": "uint256"
 			}
 		],
 		"name": "AddProject",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "userId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "userAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "balance",
-				"type": "uint256"
-			}
-		],
-		"name": "Adduser",
 		"type": "event"
 	},
 	{
@@ -106,6 +106,19 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "_projectID",
+				"type": "uint256"
+			}
+		],
+		"name": "closeVoting",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "spender",
 				"type": "address"
@@ -152,39 +165,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "openReg",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_orgAdmin",
-				"type": "address"
-			}
-		],
-		"name": "OrgAdmin_Add",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_orgAdmin",
-				"type": "address"
-			}
-		],
-		"name": "OrgAdmin_Remove",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -206,8 +186,23 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "_votingThresholdAmt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minStakingAmt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_closingTime",
+				"type": "uint256"
+			},
+			{
 				"internalType": "string",
-				"name": "_url",
+				"name": "_hash",
 				"type": "string"
 			}
 		],
@@ -244,75 +239,17 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
 				"name": "_projectID",
 				"type": "uint256"
 			}
 		],
-		"name": "Project_EvaluateVotes",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "VoteForWeight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "VoteAgainstWeight",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_projectID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "enum FilmDAO.ProjectState",
-				"name": "_state",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_votingThresholdAmt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_minStakingAmt",
-				"type": "uint256"
-			}
-		],
-		"name": "Project_SetState",
+		"name": "Project_StakeMoney",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_projectID",
-				"type": "uint256"
-			}
-		],
-		"name": "Project_SetState_CloseVoting",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "VoteForWeight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "VoteAgainstWeight",
-				"type": "uint256"
-			}
-		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -329,16 +266,9 @@
 				"type": "uint256"
 			}
 		],
-		"name": "Project_StakeMoney",
+		"name": "Project_unStakeMoney",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "registerUser",
-		"outputs": [],
-		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -352,7 +282,7 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "to",
+				"name": "recipient",
 				"type": "address"
 			},
 			{
@@ -440,6 +370,24 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_contributor",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferToContributor",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"stateMutability": "nonpayable",
 		"type": "fallback"
 	},
@@ -486,6 +434,30 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "againstVotes",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "add",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -570,6 +542,30 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "_projectID",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "add",
+				"type": "address"
+			}
+		],
+		"name": "exists",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			},
@@ -598,8 +594,160 @@
 				"type": "uint256"
 			}
 		],
+		"name": "forVotes",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "add",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
 		"name": "ForWeight",
 		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getProjectCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_projectID",
+				"type": "uint256"
+			}
+		],
+		"name": "getProposalDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "stakedAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "stakersCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "votingThresholdAmt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "minStakingAmt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "proposer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "closingTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "closed",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "state",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "hashData",
+						"type": "string"
+					}
+				],
+				"internalType": "struct DAO.Project",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_projectID",
+				"type": "uint256"
+			}
+		],
+		"name": "getProposalState",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "VoteForWeight",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "VoteAgainstWeight",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "ForVotes",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "AgainstVotes",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "AbstainVotes",
+				"type": "uint256"
+			},
 			{
 				"internalType": "uint256",
 				"name": "",
@@ -617,25 +765,6 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_add",
-				"type": "address"
-			}
-		],
-		"name": "OrgAdmin_Check",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -715,132 +844,12 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_projectID",
-				"type": "uint256"
-			}
-		],
-		"name": "Project_GetStakedInfo",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "StakersCount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "StakedAmount",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_projectID",
-				"type": "uint256"
-			}
-		],
-		"name": "Project_GetState",
-		"outputs": [
-			{
-				"internalType": "enum FilmDAO.ProjectState",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_projectID",
-				"type": "uint256"
-			}
-		],
-		"name": "Project_GetVoterCounts",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "ForVotes",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "AgainstVotes",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "AbstainVotes",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_projectID",
-				"type": "uint256"
-			}
-		],
-		"name": "Project_GetVotingThrashold",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_projectID",
-				"type": "uint256"
-			}
-		],
-		"name": "Project_GetVotingWeights",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "VoteForWeight",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "VoteAgainstWeight",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
 		],
 		"name": "Projects",
 		"outputs": [
-			{
-				"internalType": "bytes",
-				"name": "url",
-				"type": "bytes"
-			},
 			{
 				"internalType": "uint256",
 				"name": "stakedAmount",
@@ -865,6 +874,31 @@
 				"internalType": "address",
 				"name": "proposer",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "closingTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "closed",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "state",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "hashData",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -878,25 +912,6 @@
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "ProjectStates",
-		"outputs": [
-			{
-				"internalType": "enum FilmDAO.ProjectState",
-				"name": "",
-				"type": "uint8"
 			}
 		],
 		"stateMutability": "view",
@@ -951,6 +966,25 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "stakes",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "symbol",
 		"outputs": [
@@ -964,6 +998,25 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_projectID",
+				"type": "uint256"
+			}
+		],
+		"name": "timesUp",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "totalSupply",
 		"outputs": [
@@ -971,6 +1024,71 @@
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewAllProjects",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "stakedAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "stakersCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "votingThresholdAmt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "minStakingAmt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "proposer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "closingTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "closed",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "state",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "hashData",
+						"type": "string"
+					}
+				],
+				"internalType": "struct DAO.Project[]",
+				"name": "",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",

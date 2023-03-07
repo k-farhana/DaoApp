@@ -1,65 +1,43 @@
 export default function State(props) {
     if(props.data != ''){
-        if(props.data == 0){
-            return (
-                <div>
-                    <h1>Review</h1>
-                    <h2><b></b></h2>
-                </div>
-                
-              );
-        }
-        else if(props.data == 1){
-            return (
-                <div>
-                    <h1>Cancelled</h1>
-                </div>
-              );
-        }
-        else if(props.data == 2){
-            return (
-                <div>
-                    <h1>Voting</h1>
-                </div>
-              );
-        }
-        else if(props.data == 3){
-            return (
-                <div>
-                    <h1>Defeated</h1>
-                </div>
-              );
-        }
-        else if(props.data == 4){
-            return (
-                <div>
-                    <h1>Succeeded</h1>
-                </div>
-              );
-        }
-        else if(props.data == 5){
-            return (
-                <div>
-                    <h1>Accepted</h1>
-                </div>
-              );
-        }
-        else if(props.data == 6){
-            return (
-                <div>
-                    <h1>Rejected</h1>
-                </div>
-              );
-        }    
+        let state = '';
+        return (
+            <div>
+            <table>
+            <thead>
+                <tr>
+                    <th>For weight</th>
+                    <th>Against weight</th>
+                    <th> For voters count</th>
+                    <th> Against voters count</th>
+                    <th> Abstain voters count</th>
+                    <th> Project State</th>
+                </tr>
+            </thead>
+            <tbody>
+                {props.data.map((item, index) => {
+                    if(item[5] == 0){
+                        state = 'voting'
+                    }else if(item[5] ==1){
+                        state = 'Defeated'
+                    }else
+                        state = 'Succeeded'
+                return (
+                    <tr>
+                        <td>{item[0]}</td>
+                        <td>{item[1]}</td>
+                        <td>{item[2]}</td>
+                        <td>{item[3]}</td>
+                        <td>{item[4]}</td>
+                        <td>{state}</td>
+                    </tr>
+                );
+                })}
+            </tbody>
+            </table>
+        </div>
+      );
     }
-    
-    // else if(props.data != ''){
-    //     return (
-    //         <div>
-    //             <h1>{props.data}</h1>
-    //         </div>
-    //       );
-    // }
     }
 
 

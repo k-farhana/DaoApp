@@ -7,7 +7,9 @@ export default function History(props) {
                     <tr>
                         <th>ProjectID</th>
                         <th> Proposer Address</th>
-                        <th> Url</th>
+                        <th> Min staking amount</th>
+                        <th> Voting threshold</th>
+                        <th> Closing Time</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -17,6 +19,8 @@ export default function History(props) {
                             <td>{item[0]}</td>
                             <td>{item[1]}</td>
                             <td>{item[2]}</td>
+                            <td>{item[3]}</td>
+                            <td>{item[4]}</td>
                         </tr>
                     );
                     })}

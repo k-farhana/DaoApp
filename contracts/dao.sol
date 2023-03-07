@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
-contract DAO is Ownable, ERC20("ISBToken", "ISB") {
+contract DAO is Ownable, ERC20("Water Insight Token", "WIT") {
 
   using Strings for uint256;
 
@@ -45,6 +45,7 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
     uint256 amount;
   }
 
+  mapping(address => uint256) public stakes;
   mapping(uint256 => uint256) public ForWeight;
   mapping(uint256 => uint256) public AgainstWeight;
   mapping(uint256 => address[] ) public ForVoters;
@@ -78,7 +79,6 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
       Projects[ProjectsCount].time = block.timestamp;
       Projects[ProjectsCount].closingTime = _closingTime;
       Projects[ProjectsCount].state = 0;
-      // Projects[ProjectsCount].closed = false;
       Projects[ProjectsCount].hashData = _hash;
     }
     emit AddProject(ProjectsCount, msg.sender, _minStakingAmt, _votingThresholdAmt, _closingTime);
@@ -88,18 +88,20 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
 
   function Project_StakeMoney(uint256 _amount, uint256 _projectID) public  {
     require((_projectID <= ProjectsCount) && (_projectID > 0), 'Invalid Project ID' );
-    require(balanceOf(msg.sender) - allowance(msg.sender,admin) >= Projects[ProjectsCount].minStakingAmt, 'Insufficient Token balance');
-    require(_amount <= balanceOf(msg.sender) - allowance(msg.sender,admin) && _amount > 0, 'Insufficient Token balance');
+    require(balanceOf(msg.sender) - stakes[msg.sender] >= _amount, 'Insufficient Token balance');
+    require(_amount <= balanceOf(msg.sender) - stakes[msg.sender] && _amount > 0, 'Insufficient Token balance');
     require(StakedAmounts[_projectID][msg.sender] + _amount >= Projects[ProjectsCount].minStakingAmt, 'Low staking amount');
     require(timesUp(_projectID) == false, 'Cannot stake beyond closing period');
     require(Projects[_projectID].closed == false, 'Project closed');
+    require(msg.sender != Projects[_projectID].proposer, 'cannot stake to own project');
         unchecked {
-                increaseAllowance(admin,_amount);
+                increaseAllowance(Projects[_projectID].proposer,_amount);
                 Projects[_projectID].stakedAmount += _amount;
                 if (StakedAmounts[_projectID][msg.sender] == 0) {
                   Projects[_projectID].stakersCount += 1;
                 }     
                 StakedAmounts[_projectID][msg.sender] += _amount;
+                stakes[msg.sender] += _amount;
               }
   }
 
@@ -135,7 +137,7 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
   }
 
   function closeVoting(uint256 _projectID) public {
-    require(msg.sender == admin, 'only admin can close voting');
+    require(msg.sender == Projects[_projectID].proposer, 'only proposer can close voting');
     require((_projectID <= ProjectsCount) && (_projectID > 0), 'Invalid Project ID' );
     require(Projects[_projectID].closed == false, 'Project already closed');
     require(timesUp(_projectID) == true, 'Please wait till proposal closing time');
@@ -149,7 +151,8 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
         if (nForWeight >= nAgainstWeight) {
           Projects[_projectID].state = 2;
           for(uint i=0; i<ForVoters[_projectID].length; i++){
-            transferFrom(forVotes[_projectID].add, Projects[_projectID].proposer, StakedAmounts[_projectID][forVotes[_projectID].add]);
+            transferFrom(forVotes[_projectID].add, msg.sender, StakedAmounts[_projectID][forVotes[_projectID].add]);
+            stakes[forVotes[_projectID].add] -= StakedAmounts[_projectID][forVotes[_projectID].add];
           }
         } else {
           Projects[_projectID].state = 1;
@@ -191,7 +194,8 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
                   Projects[_projectID].stakersCount -= 1;
                 }     
                 StakedAmounts[_projectID][msg.sender] -= _amount;
-                decreaseAllowance(admin, _amount);
+                stakes[msg.sender] -= _amount;
+                decreaseAllowance(Projects[_projectID].proposer, _amount);
               }
         }else{
           if(Projects[_projectID].closed = true){
@@ -202,7 +206,8 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
                   Projects[_projectID].stakersCount -= 1;
                 }     
                 StakedAmounts[_projectID][msg.sender] -= _amount;
-                decreaseAllowance(admin, _amount);
+                stakes[msg.sender] -= _amount;
+                decreaseAllowance(Projects[_projectID].proposer, _amount);
               }
               }else if(Projects[_projectID].state == 2){
                 if(exists(_projectID, msg.sender)){
@@ -212,7 +217,8 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
                       Projects[_projectID].stakersCount -= 1;
                     }     
                     StakedAmounts[_projectID][msg.sender] -= _amount;
-                    decreaseAllowance(admin, _amount);
+                    stakes[msg.sender] -= _amount;
+                    decreaseAllowance(Projects[_projectID].proposer, _amount);
                   }
                 }
                 else{
@@ -256,6 +262,12 @@ contract DAO is Ownable, ERC20("ISBToken", "ISB") {
 
   function getProjectCount() public view returns(uint256){
     return ProjectsCount;
+  }
+
+  function transfer(address recipient, uint256 amount) public virtual override returns(bool) {
+    require(balanceOf(msg.sender) - stakes[msg.sender] >= amount);
+    _transfer(msg.sender, recipient, amount);
+    return true;
   }
  
   fallback() external  {
