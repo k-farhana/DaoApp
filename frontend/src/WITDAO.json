@@ -705,7 +705,7 @@
 						"type": "string"
 					}
 				],
-				"internalType": "struct DAO.Project",
+				"internalType": "struct WITDAO.Project",
 				"name": "",
 				"type": "tuple"
 			}
@@ -1086,7 +1086,7 @@
 						"type": "string"
 					}
 				],
-				"internalType": "struct DAO.Project[]",
+				"internalType": "struct WITDAO.Project[]",
 				"name": "",
 				"type": "tuple[]"
 			}

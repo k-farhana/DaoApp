@@ -144,7 +144,7 @@ function User() {
             });
             // res = await response;
             res = await response.json();
-            console.log(res)
+            // console.log(res)
             if (response.ok) {
                 console.log('File uploaded successfully');
                 //  console.log(res);

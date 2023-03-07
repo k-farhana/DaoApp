@@ -1,16 +1,15 @@
 import Web3 from "web3";
-import FilmDAO from "./FilmDAO.json"
+import WITDAO from "./WITDAO.json"
   const ethereum = window.ethereum;
 
   const web3 = new Web3(ethereum);
 
-  // const ContractAddress = FilmDAO.networks["5777"].address;
-  // const ContractAddress = '0x32E196677dc2F48118c6820dB26076af905D5a4c';
-  // const ContractAddress = '0xB43CE4eaa984b7D52D592Fc17e5576945d80f3c3';
-  // const ContractAddress = '0xe77D0E7DC1aF594b0d553bA866Cb703C181890A0';
-  // 0x865f3Db161fE4089bc15f8044D6066b324B8f2F2
   const ContractAddress = '0x9412eaaDc0A5B2883304e5bc022A2971a24076F0';
-  const ContractAbi = FilmDAO;
+
+
+  // admin 0x4E92Aa11959c1417b5b4BA53E98500743d0C0f5d goerli 
+  // const ContractAddress = '0xE291427acc23472491E4c6d92DCDd4d0a1ddB7E1';
+  const ContractAbi = WITDAO;
 
   const myContract = new web3.eth.Contract(
     ContractAbi,
