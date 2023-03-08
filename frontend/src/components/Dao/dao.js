@@ -126,9 +126,9 @@ function User() {
 
     const add_Project = async () => {
         // enableMetaMask();
-        let _votingThreshold = "200";
-        let _minStakingAmt = "200";
-        let _closingTime = "120";
+        let _votingThreshold = document.getElementById("_votingThreshold").value;
+        let _minStakingAmt = document.getElementById("_minStakingAmt").value;
+        let _closingTime = document.getElementById("time").value;
         let title = document.getElementById("title").value;
         let description = document.getElementById("description").value;
         let summary =  document.getElementById("summary").value;
@@ -147,7 +147,7 @@ function User() {
             redirect: 'follow'
         };
         let _hash
-        let response = await fetch("http://localhost:3001/upload", requestOptions)
+        let response = await fetch("http://localhost:5001/upload", requestOptions)
         .then(response => response.text(alert("succesfully posted the project")))
         .catch(error => alert("There was an error posting the project"));
         response = JSON.parse(response)

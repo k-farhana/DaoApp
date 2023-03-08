@@ -7,7 +7,7 @@ import ISBDAO from "./ISBDAO.json"
 
 
   // Ganache
-  // const ContractAddress = '0x9412eaaDc0A5B2883304e5bc022A2971a24076F0';
+  // const ContractAddress = '0xe47CCf790E99575238526Dba4f8420aB7a2907bf';
 
   // Water insight dao
   // admin 0x4E92Aa11959c1417b5b4BA53E98500743d0C0f5d goerli 

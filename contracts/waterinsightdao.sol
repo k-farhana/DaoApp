@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
-contract DAO is Ownable, ERC20("Water Insight Token", "WIT") {
+contract WITDAO is Ownable, ERC20("Water Insight Token", "WIT") {
 
   using Strings for uint256;
 
@@ -65,7 +65,7 @@ contract DAO is Ownable, ERC20("Water Insight Token", "WIT") {
 
   constructor() {
     admin = msg.sender;
-    _mint(admin, 1000000 * 10**18);
+    _mint(admin, 10000000 * 10**18);
   }
 
   function Project_Add( uint256 _votingThresholdAmt, uint256 _minStakingAmt, uint256 _closingTime, string memory _hash) public returns(uint256) {
