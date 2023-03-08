@@ -98,7 +98,6 @@
     </style>
   </head>
   <body>
-<<<<<<< HEAD
     <h1>Project Proposal</h1>
     <div class="container">
       <div class="form-container">
@@ -151,36 +150,6 @@
             "title":title,
             "description":description,
             "summary":summary
-=======
-    <form>
-      <input type="file" id="file-input">
-      <button type="submit" id="submit-button">Upload</button>
-    </form>
-    <script>
-      const form = document.querySelector('form');
-      const fileInput = document.querySelector('#file-input');
-      const submitButton = document.querySelector('#submit-button');
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const file = fileInput.files[0];
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-          const response = await fetch('http://localhost:5001/upload', {
-            method: 'POST',
-            body: formData
-          });
-          const result = await response.json();
-
-          if (response.ok) {
-            console.log('File uploaded successfully');
-            console.log(result);
-          } else {
-            console.error('Error uploading file');
->>>>>>> 2f6d026b5d85da2218143edcc763bd084c862f9f
           }
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
