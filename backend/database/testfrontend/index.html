@@ -1,9 +1,157 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>File Upload Example</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Proposal</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        background-color: #f4f4f4;
+        padding: 1rem;
+      }
+
+      h1 {
+        margin-bottom: 1rem;
+      }
+      
+      .container {
+        margin: 0 auto;
+        max-width: 70%;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .form-container {
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+        width: 70%;
+        height: 90%;
+        max-width: 600px;
+        max-height: 600px;
+      }
+
+      .card {
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+        width:70%;
+      }
+
+      .card h2 {
+        font-size: 24px;
+        margin-bottom: 0.5rem;
+      }
+
+      .card p {
+        font-size: 16px;
+        margin-bottom: 0.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      input[type="text"],
+      textarea {
+        display: block;
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      button[type="submit"] {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        line-height: 1.5;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+    </style>
   </head>
   <body>
+<<<<<<< HEAD
+    <h1>Project Proposal</h1>
+    <div class="container">
+      <div class="form-container">
+        <form id="newProjectForm">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" required />
+  
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" rows="5" required></textarea>
+  
+          <label for="summary">Summary:</label>
+          <textarea id="summary" name="summary" rows="5" required></textarea>
+  
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+  
+      <div class="form-container">
+        <form id="getProjectForm">
+          <label for="hash">Hash:</label>
+          <input type="text" id="hash" name="hash" required />
+  
+          <button type="submit" name="getProjectDetails">Get Project Details</button>
+          </form>
+        </div>
+    
+        <div id="projectDetails" class="card" style="display: none;">
+          <h2 id="projectTitle"></h2>
+          <p id="projectDescription"></p>
+          <p id="projectSummary"></p>
+        </div>
+    </div>
+  
+      <script>
+        const newProjectForm = document.querySelector('#newProjectForm');
+        const getProjectForm = document.querySelector('#getProjectForm');
+        const projectDetails = document.querySelector('#projectDetails');
+        const projectTitle = document.querySelector('#projectTitle');
+        const projectDescription = document.querySelector('#projectDescription');
+        const projectSummary = document.querySelector('#projectSummary');
+  
+        newProjectForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          
+          const formData = new FormData(newProjectForm);
+          const title = formData.get("title");
+          const description = formData.get("description");
+          const summary = formData.get("summary");
+          const data = {
+            "title":title,
+            "description":description,
+            "summary":summary
+=======
     <form>
       <input type="file" id="file-input">
       <button type="submit" id="submit-button">Upload</button>
@@ -32,11 +180,46 @@
             console.log(result);
           } else {
             console.error('Error uploading file');
+>>>>>>> 2f6d026b5d85da2218143edcc763bd084c862f9f
           }
-        } catch (err) {
-          console.error(err);
-        }
-      });
-    </script>
-  </body>
-</html>
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          var raw = JSON.stringify(data);
+          var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+          };
+
+          fetch("http://localhost:5000/upload", requestOptions)
+            .then(response => response.text())
+            .then(result => alert("succesfully posted the project"))
+            .catch(error => alert("There was an error posting the project"));
+         
+        });
+  
+        getProjectForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+  
+          const formData = new FormData(getProjectForm);
+          const hash = formData.get('hash');
+  
+          const response = await fetch(`http://localhost:5000/project/${hash}`);
+  
+          if (response.ok) {
+            const result = await response.json();
+            const data = result[0];
+            projectTitle.textContent = data.title;
+            projectDescription.textContent = data.description;
+            projectSummary.textContent = data.summary;
+  
+            projectDetails.style.display = 'block';
+          } else {
+            alert('There was an error retrieving the project details. Please try again later.');
+          }
+        });
+      </script>
+    </body>
+  </html>
+  

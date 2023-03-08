@@ -13,7 +13,9 @@ const projectSchema = new mongoose.Schema({
     summary: {
       type: String,
       required: true
-    }
+    },
+    hash: {type:String, required:true, unique:true},
+    createdAt: { type: Date, default: Date.now }
   });
 
   // Create the Mongoose model for the project
