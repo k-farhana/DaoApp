@@ -125,48 +125,43 @@ function User() {
 
 
     const add_Project = async () => {
-        enableMetaMask();
-        let _votingThreshold = document.getElementById('_votingThreshold').value;
-        let _minStakingAmt = document.getElementById('_minStakingAmt').value;
-        let _closingTime = document.getElementById('time').value;
-
-        let file = document.getElementById('file').files[0];
-
-        console.log(file);
-        const formData = new FormData();
-        formData.append('file', file);
-
-        let res;
-        try {
-            const response = await fetch('http://localhost:5001/upload', {
-                method: 'POST',
-                body: formData
-            });
-            // res = await response;
-            res = await response.json();
-            // console.log(res)
-            if (response.ok) {
-                console.log('File uploaded successfully');
-                //  console.log(res);
-                let _hash = res.fileHash;
-                console.log(_hash)
-            }
-            else {
-                console.error('Error uploading file');
-            }
+        // enableMetaMask();
+        let _votingThreshold = "200";
+        let _minStakingAmt = "200";
+        let _closingTime = "120";
+        let title = document.getElementById("title").value;
+        let description = document.getElementById("description").value;
+        let summary =  document.getElementById("summary").value;
+        const data = {
+            "title": title,
+            "description": description,
+            "summary": summary
         }
-        catch (err) {
-            console.error(err);
-        }
-        let _hash = res.fileHash;
-        
-            const addProject = await myContract.methods.Project_Add(
-                _votingThreshold,
-                _minStakingAmt,
-                _closingTime,
-                _hash
-            ).send({ from: ethereum.selectedAddress })
-         
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify(data);
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+        let _hash
+        let response = await fetch("http://localhost:3001/upload", requestOptions)
+        .then(response => response.text(alert("succesfully posted the project")))
+        .catch(error => alert("There was an error posting the project"));
+        response = JSON.parse(response)
+
+        console.log(response.hash)
+        _hash=response["hash"]
+        console.log(_hash)
+        const addProject = await myContract.methods.Project_Add(
+            _votingThreshold,
+            _minStakingAmt,
+            _closingTime,
+            _hash
+        ).send({ from: ethereum.selectedAddress })
+
     };
 
 
@@ -223,7 +218,6 @@ function User() {
                     </div>
                 </div>
                 <div className="direction">
-
                     <div className="card">
                         <div className="Text-top"><u>View Project Proposals</u></div>
                         <Card.Text>
@@ -270,7 +264,16 @@ function User() {
                     <div className="card">
                         <div className="Text-top"><u>Add Project</u></div>
                         <br></br>
-                        <Card.Text><input type="file" id="file" name="file" /></Card.Text>
+                        <Card.Text>
+                            title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="title" placeholder="Title"></input>
+                        </Card.Text>
+                        <Card.Text>
+                            Summary:<tab> </tab><input id="summary" placeholder="Summary"></input>
+                        </Card.Text>
+                        <Card.Text>
+                            Decription:&nbsp;<tab> </tab><input id="description" placeholder="Description"></input>
+                            <br></br>
+                        </Card.Text>
                         <Card.Text>
                             Voting Threshold:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="_votingThreshold" placeholder="Voting threshold"></input>
                         </Card.Text>
