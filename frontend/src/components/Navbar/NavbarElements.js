@@ -4,12 +4,12 @@ import styled from 'styled-components';
   
 export const Nav = styled.nav`
   background: white;
-  height: 75px;
+  height: 12vh;
   display: flex;
   width: 100%;
   margin-bottom: 10vh;
-  align-items: left;
-  justigy-content: left;
+  // align-items: right;
+  justify-content: right;
   top:0;
   position: fixed;
   z-index: 12;

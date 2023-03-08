@@ -24,11 +24,10 @@
 }
 
 .Text_product{
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 600;
-    /* color: white; */
-    margin-top: 2.4vh;
-
+    margin-top: 3.4vh;
+    min-width:25vw;
     margin-left: 1vw;;
 }
 .Text_product1{
@@ -36,6 +35,7 @@
     font-weight: 600;
     margin-top: 4.5vh;
     margin-left: .9vw;;
+    
 }
 .Dow_text{
     font-size: 2.1rem;
@@ -45,21 +45,52 @@
     margin-left: 18.5vw;
 }
 .top_align_nav{
-    left:20vw;
     display: flex;
-    flex-direction: column !important;
-    /* justify-content: right !important;
-    align-items: right !important; */
+    flex-direction: row !important;
+    justify-content: right !important;
+    align-items: right !important;
+    width: 70vw;
+    margin-top: 1vh;
+}
+.logo1{
+    margin-left: .5vw;
+    height: 9.5vh;
+    width: 9vw;
+}
+.logo2{
+    margin-top: 6vh;
+    height: 3.5vh;
+    width: 9vw;
+}
+.About_logo{
+    margin-top: 3vh;
+    height: 4vh;
+    width: 7vw;
     margin-left: 1vw;
     margin-right: 1vw;
-    width: auto;
+}
+.pow_text{
+    font-size: .8em;
+    margin-top: 3.7vh;
+    margin-left: 1vw;
+    font-weight: 800;
+}
+.top_align_nav1{
+    display: flex;
+    flex-direction: row !important;
+    justify-content: left !important;
+    align-items: left !important;
+    width: 30vw;
     margin-top: 1vh;
 }
 .About_text{
     /* justify-content: right;
     align-items: right; */
-    padding-left:53vw;
+    margin-top:3vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
     font-size: 1.1em;
+    width: auto;
 }
 .nft_text{
     justify-content: right;
@@ -142,6 +173,8 @@ h4:hover{
 .btn_back{
     background-color: black !important;
     color: white !important;
+    height: 6vh;
+    margin-top: 1.5vh;
 }
 .btn_back:hover{
     background-color: #2385a5 !important;
