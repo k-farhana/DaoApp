@@ -132,6 +132,7 @@ function User() {
         let title = document.getElementById("title").value;
         let description = document.getElementById("description").value;
         let summary =  document.getElementById("summary").value;
+        let funding_Target = document.getElementById("funding_Target").value;
         const data = {
             "title": title,
             "description": description,
@@ -159,6 +160,7 @@ function User() {
             _votingThreshold,
             _minStakingAmt,
             _closingTime,
+            funding_Target,
             _hash
         ).send({ from: ethereum.selectedAddress })
 
@@ -268,6 +270,9 @@ function User() {
                             title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="title" placeholder="Title"></input>
                         </Card.Text>
                         <Card.Text>
+                            Funding Target:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="funding_Target" placeholder="Funding Target"></input>
+                        </Card.Text>
+                        <Card.Text>
                             Summary:<tab> </tab><input id="summary" placeholder="Summary"></input>
                         </Card.Text>
                         <Card.Text>
@@ -275,7 +280,7 @@ function User() {
                             <br></br>
                         </Card.Text>
                         <Card.Text>
-                            Voting Threshold:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="_votingThreshold" placeholder="Voting threshold"></input>
+                            Voting Threshold:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="_votingThreshold" placeholder="Voting threshold"></input>
                         </Card.Text>
                         <Card.Text>
                             Minimum staking amount:<tab> </tab><input id="_minStakingAmt" placeholder="Min stake amount"></input>
