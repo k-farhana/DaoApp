@@ -192,3 +192,153 @@ h4:hover{
         flex-direction: column;
     }
   }
+
+.project-card {
+    align-items: center;
+    position: relative;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    border-radius: 0.5vw;
+    width: 90%;
+    margin-bottom: 2vh;
+    justify-content: center;
+    box-shadow: 0 8px 8px -4px lightblue;
+}
+
+.project-card-green {
+    align-items: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    border-radius: 0.5vw;
+    width: 90%;
+    margin-bottom: 2vh;
+    justify-content: center;
+    box-shadow: 0 8px 8px -4px lightblue;
+    background-color: rgba(47, 242, 29, 0.638);
+}
+
+.project-card-yellow {
+    align-items: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    border-radius: 0.5vw;
+    width: 90%;
+    margin-bottom: 2vh;
+    justify-content: center;
+    box-shadow: 0 8px 8px -4px lightblue;
+    background-color: rgba(255, 238, 0, 0.815)
+}
+
+.project-card:hover {
+    box-shadow: 0 8px 8px -4px lightblue;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+
+.project-card-body {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+
+    flex: 1 1 auto;
+}
+
+.project-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: .75rem;
+}
+
+.project-card-subtitle {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.project-card-text {
+    font-size: .875rem;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.project-card-proposer-avatar {
+    width: 100%;
+}
+
+.project-card-proposer-avatar img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+
+.project-card-proposer-name {
+    width: 100%;
+}
+
+.project-card-proposer-name-text {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0;
+    margin-top: 5px;
+    color: gray;
+}
+
+.project-card-proposer-name-subtext {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0;
+    color: gray;
+}
+
+.project-card-status {
+    width: 100%;
+}
+
+.project-card-status-button {
+    width: 100%;
+    height: 3rem;
+}
+
+.project-card-status-button-text {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0;
+    margin-top: 5px;
+    color: white;
+    background-color: #004cff;
+    align-items: flex-end;
+    float: right;
+    border-radius: 5px;
+    border: 0;
+    padding: 0.3rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+    margin-right: 5px;
+}
+
+.project-card-status-button-icon {
+    background-color: transparent;
+    border: 0;
+    color: #004cff;
+    align-items: flex-end;
+    float: right;
+    margin-top: 5px;
+}
+
+.project-card-info {
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+}
+
+.project-card-info-col1, .project-card-info-col2 {
+    width: 50%;
+}

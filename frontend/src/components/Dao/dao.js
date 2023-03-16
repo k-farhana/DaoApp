@@ -19,16 +19,69 @@ import Navbar from '../Navbar';
 import { Navigate } from "react-router-dom";
 import axios from 'axios';
 
-
-
 function User() {
     useEffect(() => {
         enableMetaMask();
     }, [])
 
-    const [all_projects, setall_projects] = useState("0");
+    const [all_projects, setall_projects] = useState([]);
     const [Project_state, setProject_state] = useState("0");
     const ethereum = window.ethereum;
+
+    const pros = [
+        {
+            minStakingAmt: 100,
+            stakeCount: 2,
+            temp: 3,
+            temp2: 3,
+            id: 1,
+            address: "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+            closingTime: 100,
+            status: "Succeeded",
+            name: "Avinash",
+            suggestionDate: "16 Mar 2023",
+            description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+            for: 0,
+            against: 0,
+            abstain: 0,
+        },
+        {
+            minStakingAmt: 100,
+            stakeCount: 2,
+            temp: 3,
+            temp2: 3,
+            id: 2,
+            address: "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+            closingTime: 100,
+            status: "Review",
+            name: "Avinash",
+            suggestionDate: "16 Mar 2023",
+            description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+            for: 0,
+            against: 0,
+            abstain: 0,
+        },
+        {
+            minStakingAmt: 100,
+            stakeCount: 2,
+            temp: 3,
+            temp2: 3,
+            id: 2,
+            address: "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+            closingTime: 100,
+            status: "Voting",
+            name: "Avinash",
+            suggestionDate: "16 Mar 2023",
+            description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+            for: 0,
+            against: 0,
+            abstain: 0,
+        },
+    ];
+
+    useEffect(() => {
+        setall_projects(pros);
+    }, []);
 
     const getInitialState1 = () => {
         const value = "0";
@@ -234,7 +287,7 @@ function User() {
                     </div>
                     <div className="card">
                         <div className="Text-top"><u>Get All Projects</u></div>
-                        <Card.Text>
+                        <Card.Text style={{width: "100%"}}>
                             <Display data={all_projects}></Display>
                         </Card.Text>
                         <Button
